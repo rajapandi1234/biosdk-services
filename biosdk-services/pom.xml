@@ -35,9 +35,6 @@
 	<description>Sample implementation of biometrics SDK services</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
 
-	<description>Sample implementation of biometrics SDK services</description>
-	<url>https://github.com/mosip/mosip-ref-impl</url>
-
 	<properties>
 		<java.version>11</java.version>
       	<!-- maven -->
