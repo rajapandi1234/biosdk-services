@@ -8,6 +8,29 @@
 	<groupId>io.mosip.biosdk</groupId>
 	<version>1.2.1-SNAPSHOT</version>
 	<name>biosdk-services</name>
+	
+	<licenses>
+          <license>
+                <name>MPL 2.0</name>
+                <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+          </license>
+    	</licenses>
+
+    	<scm>
+            <connection>scm:git:git://github.com/mosip/biosdk-services.git</connection>
+            <developerConnection>scm:git:ssh://github.com:mosip/biosdk-services.git</developerConnection>
+            <url>https://github.com/mosip/biosdk-services</url>
+            <tag>HEAD</tag>
+    	</scm> 
+
+    	<developers>
+                <developer>
+                  <name>Mosip</name>
+                  <email>mosip.emailnotifier@gmail.com</email>
+                  <organization>io.mosip</organization>
+                  <organizationUrl>https://mosip.io</organizationUrl>
+                </developer>
+   	 </developers>
 
 	<description>Sample implementation of biometrics SDK services</description>
 	<url>https://github.com/mosip/mosip-ref-impl</url>
@@ -30,10 +53,11 @@
 		<!-- Swagger -->
 		<swagger.version>2.9.2</swagger.version>
 
+
 		<!-- Mosip kernel -->
-		<kernel.biometricsdk.version>1.2.1-SNAPSHOT</kernel.biometricsdk.version>
-		<kernel.logger.logback.version>1.2.1-SNAPSHOT</kernel.logger.logback.version>
-		<kernel.core.version>1.2.1-SNAPSHOT</kernel.core.version>
+		<kernel.biometrics.api.version>1.2.0.1-B2</kernel.biometrics.api.version>
+		<kernel.logger.logback.version>1.2.0.1-B1</kernel.logger.logback.version>
+		<kernel.core.version>1.2.0.1-B1</kernel.core.version>
 		<!-- Spring -->
 		<spring.boot.version>2.0.2.RELEASE</spring.boot.version>
 	</properties>
@@ -65,6 +89,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 
 	<dependencies>
 		<dependency>
@@ -113,7 +138,7 @@
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
 			<artifactId>kernel-biometrics-api</artifactId>
-			<version>${kernel.biometricsdk.version}</version>
+			<version>${kernel.biometrics.api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
@@ -179,6 +204,26 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.5</version>
+                  <executions>
+                        <execution>
+                          <id>sign-artifacts</id>
+                          <phase>verify</phase>
+                          <goals>
+                                <goal>sign</goal>
+                          </goals>
+		          <configuration>
+                		<gpgArguments>
+                    			<arg>--pinentry-mode</arg>
+                    			<arg>loopback</arg>
+                		</gpgArguments>
+            		 </configuration>
+                        </execution>
+                  </executions>
+                </plugin>
 			<plugin>
 				 <groupId>org.apache.maven.plugins</groupId>
 			   <artifactId>maven-compiler-plugin</artifactId>
