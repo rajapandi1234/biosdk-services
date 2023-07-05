@@ -8,7 +8,7 @@ ENV biosdk_class=$biosdk_class
 
 copy ./target/biosdk-services-*.jar biosdk-services.jar
 
-RUN wget $biosdk_jar_path -O biosdk.jar
+CMD wget $biosdk_jar_path -O biosdk.jar
 
 EXPOSE 9099
 
