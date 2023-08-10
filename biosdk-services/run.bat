@@ -1,0 +1,1 @@
+java -Dloader.path=target/mock-sdk-1.2.1-SNAPSHOT-jar-with-dependencies.jar -Dbiosdk_bioapi_impl=io.mosip.mock.sdk.impl.SampleSDKV2 -jar target/biosdk-services-1.2.1-SNAPSHOT.jar
