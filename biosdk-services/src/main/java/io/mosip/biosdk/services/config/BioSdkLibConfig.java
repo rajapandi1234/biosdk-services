@@ -1,6 +1,7 @@
 package io.mosip.biosdk.services.config;
 
-import io.mosip.kernel.biometrics.spi.IBioApi;
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import javax.annotation.PostConstruct;
+import io.mosip.kernel.biometrics.spi.IBioApi;
 
 @Configuration
+@PropertySource("classpath:bootstrap.properties")
 public class BioSdkLibConfig {
     private static final Logger logger = LoggerFactory.getLogger(BioSdkLibConfig.class);
     @Autowired
