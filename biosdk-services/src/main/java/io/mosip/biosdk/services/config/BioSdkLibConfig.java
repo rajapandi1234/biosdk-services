@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import io.mosip.kernel.biometrics.spi.IBioApi;
 
 @Configuration
-@PropertySource("classpath:bootstrap.properties")
 public class BioSdkLibConfig {
     private static final Logger logger = LoggerFactory.getLogger(BioSdkLibConfig.class);
     @Autowired
