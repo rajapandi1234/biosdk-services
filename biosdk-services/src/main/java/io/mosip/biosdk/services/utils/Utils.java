@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -45,22 +46,35 @@ public class Utils {
     }
 	
 	public static String toString(BiometricRecord biometricRecord) {
+		if(biometricRecord == null) {
+			return "null";
+		}
+		
 		StringBuilder stringBuilder = new StringBuilder();
 		appendString(biometricRecord, stringBuilder);
 		return stringBuilder.toString();
 	}
 
     private static void appendString(BiometricRecord biometricRecord, StringBuilder stringBuilder) {
-		stringBuilder.append("BiometricRecord: { ");
-		stringBuilder.append("birInfo: ");
-		stringBuilder.append(biometricRecord.getBirInfo());
-		stringBuilder.append(", cbeffversion:");
-		stringBuilder.append(biometricRecord.getCbeffversion());
-		stringBuilder.append(", version:");
-		stringBuilder.append(biometricRecord.getVersion());
-		stringBuilder.append(", segments:");
-		appendString(biometricRecord.getSegments().stream().iterator(), stringBuilder, Utils::appendString);
-		stringBuilder.append(" }");
+    	if(biometricRecord == null) {
+    		stringBuilder.append("null");
+		} else {
+			stringBuilder.append("BiometricRecord: { ");
+			stringBuilder.append("birInfo: ");
+			stringBuilder.append(biometricRecord.getBirInfo());
+			stringBuilder.append(", cbeffversion:");
+			stringBuilder.append(biometricRecord.getCbeffversion());
+			stringBuilder.append(", version:");
+			stringBuilder.append(biometricRecord.getVersion());
+			stringBuilder.append(", segments:");
+			List<BIR> segments = biometricRecord.getSegments();
+			if(segments == null) {
+	    		stringBuilder.append("null");
+			} else {
+				appendString(segments.stream().iterator(), stringBuilder, Utils::appendString);
+			}
+			stringBuilder.append(" }");
+		}
 	}
 
 	private static <T> void appendString(Iterator<T> iterator, StringBuilder stringBuilder, BiConsumer<T, StringBuilder> appendBiConsumer) {
@@ -76,27 +90,34 @@ public class Utils {
 	}
 
 	private static void appendString(BIR bir, StringBuilder stringBuilder) {
-		stringBuilder.append("BIR: {");
-		stringBuilder.append("bdbInfo: ");
-		stringBuilder.append(bir.getBdbInfo());
-		stringBuilder.append(", birInfo: ");
-		stringBuilder.append(bir.getBirInfo());
-		stringBuilder.append(", cbeffversion: ");
-		stringBuilder.append(bir.getCbeffversion());
-		stringBuilder.append(", others: ");
-		stringBuilder.append(bir.getOthers());
-		stringBuilder.append(", sb: ");
-		stringBuilder.append(bir.getSb());
-		stringBuilder.append(", sbInfo: ");
-		stringBuilder.append(bir.getSbInfo());
-		stringBuilder.append(", version: ");
-		stringBuilder.append(bir.getVersion());
-		stringBuilder.append(", bdbHash: ");
-		stringBuilder.append(DigestUtils.sha256Hex(bir.getBdb()));
-		stringBuilder.append(" }");
+		if(bir == null) {
+    		stringBuilder.append("null");
+		} else {
+			stringBuilder.append("BIR: {");
+			stringBuilder.append("bdbInfo: ");
+			stringBuilder.append(bir.getBdbInfo());
+			stringBuilder.append(", birInfo: ");
+			stringBuilder.append(bir.getBirInfo());
+			stringBuilder.append(", cbeffversion: ");
+			stringBuilder.append(bir.getCbeffversion());
+			stringBuilder.append(", others: ");
+			stringBuilder.append(bir.getOthers());
+			stringBuilder.append(", sb: ");
+			stringBuilder.append(bir.getSb());
+			stringBuilder.append(", sbInfo: ");
+			stringBuilder.append(bir.getSbInfo());
+			stringBuilder.append(", version: ");
+			stringBuilder.append(bir.getVersion());
+			stringBuilder.append(", bdbHash: ");
+			stringBuilder.append(bir.getBdb() == null ? "null" : DigestUtils.sha256Hex(bir.getBdb()));
+			stringBuilder.append(" }");
+		}
 	}
 	
 	public static String toString(ExtractTemplateRequestDto extractTemplateRequestDto) {
+		if(extractTemplateRequestDto == null) {
+			return "null";
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("ExtractTemplateRequestDto: { ");
 		stringBuilder.append("flags:");
@@ -110,6 +131,9 @@ public class Utils {
 	}
 
 	public static String toString(MatchRequestDto matchRequestDto) {
+		if(matchRequestDto == null) {
+			return "null";
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("MatchRequestDto: { ");
 		stringBuilder.append("flags:");
@@ -125,6 +149,9 @@ public class Utils {
 	}
 
 	public static String toString(InitRequestDto initRequestDto) {
+		if(initRequestDto == null) {
+			return "null";
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("InitRequestDto: { ");
 		stringBuilder.append("initParams:");
@@ -133,6 +160,9 @@ public class Utils {
 	}
 
 	public static String toString(CheckQualityRequestDto checkQualityRequestDto) {
+		if(checkQualityRequestDto == null) {
+			return "null";
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("CheckQualityRequestDto: { ");
 		stringBuilder.append("flags:");
@@ -146,6 +176,9 @@ public class Utils {
 	}
 
 	public static String toString(SegmentRequestDto segmentRequestDto) {
+		if(segmentRequestDto == null) {
+			return "null";
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("SegmentRequestDto: { ");
 		stringBuilder.append("flags:");
@@ -159,6 +192,9 @@ public class Utils {
 	}
 
 	public static String toString(ConvertFormatRequestDto convertFormatRequestDto) {
+		if(convertFormatRequestDto == null) {
+			return "null";
+		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("ConvertFormatRequestDto: { ");
 		stringBuilder.append("sourceFormat:");
