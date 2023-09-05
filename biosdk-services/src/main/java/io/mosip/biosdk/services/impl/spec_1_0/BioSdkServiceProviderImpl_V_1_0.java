@@ -45,7 +45,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 
     private Gson gson = new GsonBuilder().serializeNulls().create();
     
-    @Value("${mosip.biosdk.log-reqeuest-response-enabled:false}")
+    @Value("${mosip.biosdk.log-request-response-enabled:false}")
     private boolean isLogRequestResponse;
 
     @Override
