@@ -27,7 +27,7 @@ public class BioSdkLibConfig {
     	String sdkClass = this.env.getProperty("biosdk_bioapi_impl");
 		logger.info("Biosdk class: " + sdkClass);
         if (StringUtils.isNotBlank(sdkClass)) {
-            logger.debug("validating Bio SDK Class is present or not");
+            logger.info("validating Bio SDK Class is present or not");
             Class.forName(this.env.getProperty("biosdk_bioapi_impl"));
         }
 
@@ -40,7 +40,7 @@ public class BioSdkLibConfig {
     	String sdkClass = this.env.getProperty("biosdk_bioapi_impl");
 		logger.info("Biosdk class: " + sdkClass);
     	if (StringUtils.isNotBlank(sdkClass)) {
-            logger.debug("instance of Bio SDK is created");
+            logger.info("instance of Bio SDK is created");
             return (IBioApi)Class.forName(sdkClass).newInstance();
         } else {
             logger.debug("no Bio SDK is provided");
