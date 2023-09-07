@@ -53,7 +53,7 @@
 
 
 		<!-- Mosip kernel -->
-		<kernel.biometrics.api.version>1.2.1-SNAPSHOT</kernel.biometrics.api.version>
+		<kernel.biometrics.api.version>1.2.0.1-B2</kernel.biometrics.api.version>
 		<kernel.logger.logback.version>1.2.0.1-B1</kernel.logger.logback.version>
 		<kernel.core.version>1.2.0.1-B1</kernel.core.version>
 		<!-- Spring -->
@@ -87,6 +87,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 
 	<dependencies>
 		<dependency>
@@ -124,11 +125,13 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${swagger.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
@@ -168,6 +171,26 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin.version}</version>
 				<configuration>
@@ -196,27 +219,6 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
-				<!-- <configuration><skip>true</skip></configuration> -->
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-						<configuration>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>

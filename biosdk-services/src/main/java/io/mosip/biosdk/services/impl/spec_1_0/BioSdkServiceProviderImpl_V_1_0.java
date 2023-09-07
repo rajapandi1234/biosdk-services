@@ -11,6 +11,7 @@ import io.mosip.biosdk.services.spi.BioSdkServiceProvider;
 import io.mosip.biosdk.services.utils.Utils;
 import io.mosip.kernel.biometrics.model.Response;
 import io.mosip.kernel.biometrics.model.SDKInfo;
+//import io.mosip.kernel.biometrics.spi.IBioApi;
 import io.mosip.kernel.biometrics.spi.IBioApiV2;
 import io.mosip.kernel.core.logger.spi.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import static io.mosip.biosdk.services.constants.AppConstants.LOGGER_SESSIONID;
 
 @Component
 public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
-
     private Logger logger = LoggerConfig.logConfig(BioSdkServiceProviderImpl_V_1_0.class);
 
     private static final String BIOSDK_SERVICE_SPEC_VERSION = "1.0";
@@ -95,6 +95,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
                     matchRequestDto.getModalitiesToMatch(),
                     matchRequestDto.getFlags()
             );
+            System.out.println(LOGGER_SESSIONID + LOGGER_IDTYPE + "match response: "+ response.toString());
         } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", e.toString()+" "+e.getMessage());
@@ -147,7 +148,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 
     @Override
     public Object convertFormat(RequestDto request) {
-    	Response response;
+    	Response response = null;
         String decryptedRequest = decode(request.getRequest());
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"convertFormat: ", "decoding successful");
         ConvertFormatRequestDto convertFormatRequestDto = gson.fromJson(decryptedRequest, ConvertFormatRequestDto.class);
