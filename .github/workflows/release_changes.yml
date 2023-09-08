@@ -1,5 +1,4 @@
 name: Release/pre-release Preparation.
-
 on:
   workflow_dispatch:
     inputs:
@@ -26,12 +25,6 @@ jobs:
         # Strip git ref prefix from version
         echo "BRANCH_NAME=$(echo ${{ github.ref }} | sed -e 's,.*/\(.*\),\1,')" >> $GITHUB_ENV
         echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
-
-    - name: update Branch name in badges
-      run: |
-        sed -i 's/branch=.*)]/branch=${{ env.BRANCH_NAME }}\)]/g'  README.md
-        sed -i 's/branch=.*\&/branch=${{ env.BRANCH_NAME }}\&/g'  README.md
-
     - name: Mannualy changing the pom versions
       run: find . -type f -name "*pom.xml" -print0 | xargs -0 sed -i "s/${{ github.event.inputs.snapshotTags }}/${{ github.event.inputs.releaseTags }}/g"
 
@@ -39,13 +32,10 @@ jobs:
       run: |
           cd .github/workflows
           sed -i 's/OSSRH_SNAPSHOT_URL/RELEASE_URL/g' push_trigger.yml
-
     - name: Updating libs-snapshot-local to libs-release local for artifactory URL's.
       run: find . -type f -name "*Dockerfile" -print0 | xargs -0 sed -i "s/libs-snapshot-local/libs-release-local/g"
-
     - name: removing -DskipTests
       run: find . -type f -name "*push_trigger.yml" -print0 | xargs -0 sed -i "s/"-DskipTests"//g"
-
 #    - name: removing --Dgpg.skip
 #      run: find . -type f -name "*push_trigger.yml" -print0 | xargs -0 sed -i "s/"-Dgpg.skip"//g"
       
@@ -53,7 +43,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.ACTION_PAT }}
-        commit-message: Release Bot Pre-release changes
+        commit-message: Updated Pom versions for release changes
         title: Release changes
         body: Automated PR for ${{ github.event.inputs.releaseTags }} release.
         branch: release-branch
