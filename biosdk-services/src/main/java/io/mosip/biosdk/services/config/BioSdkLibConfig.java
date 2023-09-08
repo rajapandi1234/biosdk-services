@@ -1,7 +1,6 @@
 package io.mosip.biosdk.services.config;
 
-import javax.annotation.PostConstruct;
-
+import io.mosip.kernel.biometrics.spi.IBioApi;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 
-import io.mosip.kernel.biometrics.spi.IBioApi;
+import javax.annotation.PostConstruct;
 
 @Configuration
 public class BioSdkLibConfig {
@@ -27,7 +26,7 @@ public class BioSdkLibConfig {
     	String sdkClass = this.env.getProperty("biosdk_bioapi_impl");
 		logger.info("Biosdk class: " + sdkClass);
         if (StringUtils.isNotBlank(sdkClass)) {
-            logger.info("validating Bio SDK Class is present or not");
+            logger.debug("validating Bio SDK Class is present or not");
             Class.forName(this.env.getProperty("biosdk_bioapi_impl"));
         }
 
@@ -40,7 +39,7 @@ public class BioSdkLibConfig {
     	String sdkClass = this.env.getProperty("biosdk_bioapi_impl");
 		logger.info("Biosdk class: " + sdkClass);
     	if (StringUtils.isNotBlank(sdkClass)) {
-            logger.info("instance of Bio SDK is created");
+            logger.debug("instance of Bio SDK is created");
             return (IBioApi)Class.forName(sdkClass).newInstance();
         } else {
             logger.debug("no Bio SDK is provided");

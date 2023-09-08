@@ -97,31 +97,18 @@ public class MainController {
     public ResponseEntity<String> match(
             @Validated @RequestBody(required = true) RequestDto request,
             @ApiIgnore Errors errors) {
-        System.out.println(LOGGER_SESSIONID + LOGGER_IDTYPE+ "Match: Started");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
         ResponseDto responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
             bioSdkServiceProviderImpl = bioSdkServiceFactory.getBioSdkServiceProvider(request.getVersion());
-            logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "Match: call");
             responseDto.setResponse(bioSdkServiceProviderImpl.match(request));
-            logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "Match: call ended");
         } catch (BioSDKException e) {
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, "BioSDKException: ", e.getMessage());
             ErrorDto errorDto = new ErrorDto(e.getErrorCode(), e.getErrorText());
             responseDto.getErrors().add(errorDto);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
         }
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
-        System.out.println("-------------------------------------------------------------------------------------------");
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
