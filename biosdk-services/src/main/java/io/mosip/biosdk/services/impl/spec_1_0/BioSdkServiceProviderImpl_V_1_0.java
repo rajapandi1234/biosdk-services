@@ -22,6 +22,7 @@ import io.mosip.biosdk.services.impl.spec_1_0.dto.request.MatchRequestDto;
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.SegmentRequestDto;
 import io.mosip.biosdk.services.spi.BioSdkServiceProvider;
 import io.mosip.biosdk.services.utils.Utils;
+import io.mosip.kernel.biometrics.entities.BiometricRecord;
 import io.mosip.kernel.biometrics.model.Response;
 import io.mosip.kernel.biometrics.model.SDKInfo;
 import io.mosip.kernel.biometrics.spi.IBioApiV2;
@@ -182,7 +183,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
                     convertFormatRequestDto.getTargetParams(),
                     convertFormatRequestDto.getModalitiesToConvert()
             );
-            logBiometricRecord(biometricRecord);
+        	logResponse(response);
         } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"convertFormat: ", e.toString()+" "+e.getMessage());
