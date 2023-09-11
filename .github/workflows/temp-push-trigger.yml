@@ -140,6 +140,7 @@ jobs:
           else
             VERSION=$BRANCH_NAME
           fi
+          VERSION=temp
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag $SERVICE_NAME $IMAGE_ID:$VERSION
