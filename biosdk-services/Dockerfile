@@ -101,4 +101,4 @@ EXPOSE 9099
 ENTRYPOINT [ "./configure_biosdk.sh" ]
 
 CMD echo $biosdk_bioapi_impl ; \
-java -Dloader.path="${loader_path_env}" -Dbiosdk_bioapi_impl="${biosdk_bioapi_impl}" -Dlogging.level.root=${logging_level_root_env} -jar -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" -Dspring.application.name="${spring_application_name_env}" -Dspring.cloud.config.name=${spring_cloud_config_name_env} biosdk-services.jar
+java -Dloader.path="${loader_path_env}" -Dbiosdk_bioapi_impl="${biosdk_bioapi_impl}" -Dlogging.level.root=${logging_level_root_env} -jar -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" -Dspring.application.name="${spring_application_name_env}" -Dspring.cloud.config.name=${spring_cloud_config_name_env} -Dserver.servlet.context-path=${server_servlet_context_env} biosdk-services.jar
