@@ -26,10 +26,6 @@ ENV biosdk_local_dir_name=${biosdk_local_dir}
 
 ARG sdk_impl
 
-ARG service_context=/biosdk-service
-
-ENV service_context_env=${service_context}
-
 #ENV biosdk_zip_url=$biosdk_zip_url
 ENV biosdk_bioapi_impl=${sdk_impl}
 
