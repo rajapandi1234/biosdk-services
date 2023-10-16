@@ -69,7 +69,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         try {
         	logRequest(initRequestDto);
             sdkInfo = iBioApi.init(initRequestDto.getInitParams());
-            logResponse(sdkInfo);
+            logObject(sdkInfo);
         } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", e.toString()+" "+e.getMessage());
@@ -233,9 +233,21 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 		}			
 	}
     
-    private <T> void logResponse(T response) {
+    private <T> void logObject(T response) {
     	if(isLogRequestResponse) {
 			logger.debug(gson.toJson(response));
+    	}
+	}
+    
+    private void logResponse(Response response) {
+    	if(isLogRequestResponse) {
+    		Object resp = response.getResponse();
+    		if(resp instanceof  BiometricRecord) {
+				BiometricRecord biometricRecord = (BiometricRecord) resp;
+    			logBiometricRecord(biometricRecord);
+    		} else {
+    			logger.debug(gson.toJson(resp));
+    		}
     	}
 	}
     
