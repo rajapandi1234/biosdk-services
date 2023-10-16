@@ -45,7 +45,7 @@ public class Utils {
         return new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
     }
 	
-	public static String toString(BiometricRecord biometricRecord) {
+	public String toString(BiometricRecord biometricRecord) {
 		if(biometricRecord == null) {
 			return "null";
 		}
@@ -55,29 +55,33 @@ public class Utils {
 		return stringBuilder.toString();
 	}
 
-    private static void appendString(BiometricRecord biometricRecord, StringBuilder stringBuilder) {
+    private void appendString(BiometricRecord biometricRecord, StringBuilder stringBuilder) {
     	if(biometricRecord == null) {
     		stringBuilder.append("null");
 		} else {
 			stringBuilder.append("{\"BiometricRecord\": { ");
 			stringBuilder.append("\"birInfo\": ");
-			stringBuilder.append(biometricRecord.getBirInfo());
+			stringBuilder.append(stringOf(biometricRecord.getBirInfo()));
 			stringBuilder.append(", \"cbeffversion\":");
-			stringBuilder.append(biometricRecord.getCbeffversion());
+			stringBuilder.append(stringOf(biometricRecord.getCbeffversion()));
 			stringBuilder.append(", \"version\":");
-			stringBuilder.append(biometricRecord.getVersion());
+			stringBuilder.append(stringOf(biometricRecord.getVersion()));
 			stringBuilder.append(", \"segments\":");
 			List<BIR> segments = biometricRecord.getSegments();
 			if(segments == null) {
 	    		stringBuilder.append("null");
 			} else {
-				appendString(segments.stream().iterator(), stringBuilder, Utils::appendString);
+				appendString(segments.stream().iterator(), stringBuilder, this::appendString);
 			}
 			stringBuilder.append(" }}");
 		}
 	}
+    
+    private String stringOf(Object obj) {
+    	return gson.toJson(obj);
+    }
 
-	private static <T> void appendString(Iterator<T> iterator, StringBuilder stringBuilder, BiConsumer<T, StringBuilder> appendBiConsumer) {
+	private <T> void appendString(Iterator<T> iterator, StringBuilder stringBuilder, BiConsumer<T, StringBuilder> appendBiConsumer) {
 		stringBuilder.append("[ ");
 		while (iterator.hasNext()) {
 			T element = iterator.next();
@@ -89,125 +93,126 @@ public class Utils {
 		stringBuilder.append(" ]");
 	}
 
-	private static void appendString(BIR bir, StringBuilder stringBuilder) {
+	private void appendString(BIR bir, StringBuilder stringBuilder) {
 		if(bir == null) {
     		stringBuilder.append("null");
 		} else {
 			stringBuilder.append("{ \"BIR\": {");
 			stringBuilder.append("\"bdbInfo\": ");
-			stringBuilder.append(bir.getBdbInfo());
+			stringBuilder.append(stringOf(bir.getBdbInfo()));
 			stringBuilder.append(", \"birInfo\": ");
-			stringBuilder.append(bir.getBirInfo());
+			stringBuilder.append(stringOf(bir.getBirInfo()));
 			stringBuilder.append(", \"cbeffversion\": ");
-			stringBuilder.append(bir.getCbeffversion());
+			stringBuilder.append(stringOf(bir.getCbeffversion()));
 			stringBuilder.append(", \"others\": ");
-			stringBuilder.append(bir.getOthers());
+			stringBuilder.append(stringOf(bir.getOthers()));
 			stringBuilder.append(", \"sb\": ");
-			stringBuilder.append(bir.getSb());
+			stringBuilder.append(stringOf(bir.getSb()));
 			stringBuilder.append(", \"sbInfo\": ");
-			stringBuilder.append(bir.getSbInfo());
+			stringBuilder.append(stringOf(bir.getSbInfo()));
 			stringBuilder.append(", \"version\": ");
-			stringBuilder.append(bir.getVersion());
+			stringBuilder.append(stringOf(bir.getVersion()));
 			stringBuilder.append(", \"bdbHash\": ");
-			stringBuilder.append(bir.getBdb() == null ? "null" : DigestUtils.sha256Hex(bir.getBdb()));
+			stringBuilder.append(bir.getBdb() == null ? "null" : "\""+ DigestUtils.sha256Hex(bir.getBdb()) + "\"");
 			stringBuilder.append(" }}");
 		}
 	}
 	
-	public static String toString(ExtractTemplateRequestDto extractTemplateRequestDto) {
+	public String toString(ExtractTemplateRequestDto extractTemplateRequestDto) {
 		if(extractTemplateRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{\"ExtractTemplateRequestDto\": { ");
 		stringBuilder.append("\"flags:\"");
-		stringBuilder.append(extractTemplateRequestDto.getFlags());
+		stringBuilder.append(stringOf(extractTemplateRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToExtract\": ");
-		stringBuilder.append(extractTemplateRequestDto.getModalitiesToExtract());
+		stringBuilder.append(stringOf(extractTemplateRequestDto.getModalitiesToExtract()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(extractTemplateRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(" }}");
 		return stringBuilder.toString();
 	}
 
-	public static String toString(MatchRequestDto matchRequestDto) {
+	public String toString(MatchRequestDto matchRequestDto) {
 		if(matchRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{\"MatchRequestDto\": { ");
 		stringBuilder.append("\"flags\":");
-		stringBuilder.append(matchRequestDto.getFlags());
+		stringBuilder.append(stringOf(matchRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToMatch\": ");
-		stringBuilder.append(matchRequestDto.getModalitiesToMatch());
+		stringBuilder.append(stringOf(matchRequestDto.getModalitiesToMatch()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(matchRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(", \"gallery\": ");
-		appendString(Arrays.stream(matchRequestDto.getGallery()).iterator(), stringBuilder, Utils::appendString);
+		appendString(Arrays.stream(matchRequestDto.getGallery()).iterator(), stringBuilder, this::appendString);
 		stringBuilder.append(" }}");
 		return stringBuilder.toString();
 	}
 
-	public static String toString(InitRequestDto initRequestDto) {
+	public String toString(InitRequestDto initRequestDto) {
 		if(initRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{\"InitRequestDto\": { ");
 		stringBuilder.append("\"initParams\":");
+		stringBuilder.append(stringOf(initRequestDto));
 		stringBuilder.append(" }}");
 		return stringBuilder.toString();
 	}
 
-	public static String toString(CheckQualityRequestDto checkQualityRequestDto) {
+	public String toString(CheckQualityRequestDto checkQualityRequestDto) {
 		if(checkQualityRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{\"CheckQualityRequestDto\": { ");
 		stringBuilder.append("\"flags\":");
-		stringBuilder.append(checkQualityRequestDto.getFlags());
+		stringBuilder.append(stringOf(checkQualityRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToCheck\": ");
-		stringBuilder.append(checkQualityRequestDto.getModalitiesToCheck());
+		stringBuilder.append(stringOf(checkQualityRequestDto.getModalitiesToCheck()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(checkQualityRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(" }}");
 		return stringBuilder.toString();
 	}
 
-	public static String toString(SegmentRequestDto segmentRequestDto) {
+	public String toString(SegmentRequestDto segmentRequestDto) {
 		if(segmentRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{\"SegmentRequestDto\": { ");
 		stringBuilder.append("\"flags\":");
-		stringBuilder.append(segmentRequestDto.getFlags());
+		stringBuilder.append(stringOf(segmentRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToSegment\": ");
-		stringBuilder.append(segmentRequestDto.getModalitiesToSegment());
+		stringBuilder.append(stringOf(segmentRequestDto.getModalitiesToSegment()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(segmentRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(" }}");
 		return stringBuilder.toString();
 	}
 
-	public static String toString(ConvertFormatRequestDto convertFormatRequestDto) {
+	public String toString(ConvertFormatRequestDto convertFormatRequestDto) {
 		if(convertFormatRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{\"ConvertFormatRequestDto\": { ");
 		stringBuilder.append("\"sourceFormat\":");
-		stringBuilder.append(convertFormatRequestDto.getSourceFormat());
+		stringBuilder.append(stringOf(convertFormatRequestDto.getSourceFormat()));
 		stringBuilder.append(", \"targetFormat\": ");
-		stringBuilder.append(convertFormatRequestDto.getTargetFormat());
+		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetFormat()));
 		stringBuilder.append(", \"modalitiesToConvert\": ");
-		stringBuilder.append(convertFormatRequestDto.getModalitiesToConvert());
+		stringBuilder.append(stringOf(convertFormatRequestDto.getModalitiesToConvert()));
 		stringBuilder.append(", \"sample\": ");
 		stringBuilder.append(", \"sourceParams\":");
-		stringBuilder.append(convertFormatRequestDto.getSourceParams());
+		stringBuilder.append(stringOf(convertFormatRequestDto.getSourceParams()));
 		stringBuilder.append(", \"targetParams\": ");
-		stringBuilder.append(convertFormatRequestDto.getTargetParams());
+		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetParams()));
 		appendString(convertFormatRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(" }}");
 		return stringBuilder.toString();
