@@ -22,7 +22,9 @@ import io.mosip.biosdk.services.impl.spec_1_0.dto.request.ExtractTemplateRequest
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.InitRequestDto;
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.MatchRequestDto;
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.SegmentRequestDto;
+import io.mosip.kernel.biometrics.entities.BDBInfo;
 import io.mosip.kernel.biometrics.entities.BIR;
+import io.mosip.kernel.biometrics.entities.BIRInfo;
 import io.mosip.kernel.biometrics.entities.BiometricRecord;
 import io.mosip.kernel.core.util.DateUtils;
 
@@ -62,7 +64,7 @@ public class Utils {
 			stringBuilder.append("{");
 			stringBuilder.append(" \"_modelClass\": \"BiometricRecord\"");
 			stringBuilder.append(", \"birInfo\": ");
-			stringBuilder.append(stringOf(biometricRecord.getBirInfo()));
+			stringBuilder.append(toString(biometricRecord.getBirInfo()));
 			stringBuilder.append(", \"cbeffversion\":");
 			stringBuilder.append(stringOf(biometricRecord.getCbeffversion()));
 			stringBuilder.append(", \"version\":");
@@ -79,11 +81,11 @@ public class Utils {
 	}
     
     private String surroundWithQuote(String str) {
-    	return String.format("\"%s\"", gson.toJson(str));
+    	return str == null ? "null" : String.format("\"%s\"", gson.toJson(str));
     }
     
     private String stringOf(Object obj) {
-    	return gson.toJson(obj);
+    	return obj == null ? "null" : gson.toJson(obj);
     }
 
 	private <T> void appendString(Iterator<T> iterator, StringBuilder stringBuilder, BiConsumer<T, StringBuilder> appendBiConsumer) {
@@ -105,23 +107,27 @@ public class Utils {
 			stringBuilder.append("{");
 			stringBuilder.append(" \"_modelClass\": \"BIR\"");
 			stringBuilder.append(", \"bdbInfo\": ");
-			stringBuilder.append(stringOf(bir.getBdbInfo()));
+			stringBuilder.append(toString(bir.getBdbInfo()));
 			stringBuilder.append(", \"birInfo\": ");
 			stringBuilder.append(stringOf(bir.getBirInfo()));
 			stringBuilder.append(", \"cbeffversion\": ");
 			stringBuilder.append(stringOf(bir.getCbeffversion()));
 			stringBuilder.append(", \"others\": ");
 			stringBuilder.append(stringOf(bir.getOthers()));
-			stringBuilder.append(", \"sb\": ");
-			stringBuilder.append(stringOf(bir.getSb()));
+			stringBuilder.append(", \"sbHash\": ");
+			stringBuilder.append(getHashOfBytes(bir.getSb()));
 			stringBuilder.append(", \"sbInfo\": ");
 			stringBuilder.append(stringOf(bir.getSbInfo()));
 			stringBuilder.append(", \"version\": ");
 			stringBuilder.append(stringOf(bir.getVersion()));
 			stringBuilder.append(", \"bdbHash\": ");
-			stringBuilder.append(bir.getBdb() == null ? "null" : "\""+ DigestUtils.sha256Hex(bir.getBdb()) + "\"");
+			stringBuilder.append(getHashOfBytes(bir.getBdb()));
 			stringBuilder.append(" }");
 		}
+	}
+
+	private static String getHashOfBytes(byte[] byteArray) {
+		return byteArray == null ? "null" : "\""+ DigestUtils.sha256Hex(byteArray) + "\"";
 	}
 	
 	public String toString(ExtractTemplateRequestDto extractTemplateRequestDto) {
@@ -131,7 +137,7 @@ public class Utils {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("{");
 		stringBuilder.append(" \"_modelClass\": \"ExtractTemplateRequestDto\"");
-		stringBuilder.append(", \"flags:\"");
+		stringBuilder.append(", \"flags\":");
 		stringBuilder.append(stringOf(extractTemplateRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToExtract\": ");
 		stringBuilder.append(stringOf(extractTemplateRequestDto.getModalitiesToExtract()));
@@ -221,11 +227,82 @@ public class Utils {
 		stringBuilder.append(", \"modalitiesToConvert\": ");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getModalitiesToConvert()));
 		stringBuilder.append(", \"sample\": ");
+		appendString(convertFormatRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(", \"sourceParams\":");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getSourceParams()));
 		stringBuilder.append(", \"targetParams\": ");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetParams()));
 		appendString(convertFormatRequestDto.getSample(), stringBuilder);
+		stringBuilder.append(" }");
+		return stringBuilder.toString();
+	}
+	
+	public String toString(BDBInfo bdbInfo) {
+		if(bdbInfo == null) {
+			return "null";
+		}
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"BDBInfo\"");
+		stringBuilder.append(", \"challengeResponseHash\":");
+		stringBuilder.append(getHashOfBytes(bdbInfo.getChallengeResponse()));
+		stringBuilder.append(", \"index\": ");
+		stringBuilder.append(surroundWithQuote(bdbInfo.getIndex()));
+		stringBuilder.append(", \"format\": ");
+		stringBuilder.append(stringOf(bdbInfo.getFormat()));
+		stringBuilder.append(", \"encryption\":");
+		stringBuilder.append(Boolean.toString(bdbInfo.getEncryption()));
+		stringBuilder.append(", \"creationDate\": ");
+		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getCreationDate())));
+		stringBuilder.append(", \"notValidBefore\": ");
+		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getNotValidBefore())));
+		stringBuilder.append(", \"notValidAfter\": ");
+		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getNotValidAfter())));
+		stringBuilder.append(", \"type\": ");
+		stringBuilder.append(stringOf(bdbInfo.getType()));
+		stringBuilder.append(", \"subtype\": ");
+		stringBuilder.append(stringOf(bdbInfo.getSubtype()));
+		stringBuilder.append(", \"level\": ");
+		stringBuilder.append(stringOf(bdbInfo.getLevel()));
+		stringBuilder.append(", \"product\": ");
+		stringBuilder.append(stringOf(bdbInfo.getProduct()));
+		stringBuilder.append(", \"captureDevice\": ");
+		stringBuilder.append(stringOf(bdbInfo.getCaptureDevice()));
+		stringBuilder.append(", \"featureExtractionAlgorithm\": ");
+		stringBuilder.append(stringOf(bdbInfo.getFeatureExtractionAlgorithm()));
+		stringBuilder.append(", \"comparisonAlgorithm\": ");
+		stringBuilder.append(stringOf(bdbInfo.getComparisonAlgorithm()));
+		stringBuilder.append(", \"compressionAlgorithm\": ");
+		stringBuilder.append(stringOf(bdbInfo.getCompressionAlgorithm()));
+		stringBuilder.append(", \"purpose\": ");
+		stringBuilder.append(stringOf(bdbInfo.getPurpose()));
+		stringBuilder.append(", \"quality\": ");
+		stringBuilder.append(stringOf(bdbInfo.getQuality()));
+		stringBuilder.append(" }");
+		return stringBuilder.toString();
+	}
+	
+	public String toString(BIRInfo birInfo) {
+		if(birInfo == null) {
+			return "null";
+		}
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"BIRInfo\"");
+		stringBuilder.append(", \"creator\": ");
+		stringBuilder.append(surroundWithQuote(birInfo.getCreator()));
+		stringBuilder.append(", \"index\": ");
+		stringBuilder.append(surroundWithQuote(birInfo.getIndex()));
+		stringBuilder.append(", \"payloadHash\":");
+		stringBuilder.append(getHashOfBytes(birInfo.getPayload()));
+		stringBuilder.append(", \"integrity\":");
+		stringBuilder.append(Boolean.toString(birInfo.getIntegrity()));
+		stringBuilder.append(", \"creationDate\": ");
+		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getCreationDate())));
+		stringBuilder.append(", \"notValidBefore\": ");
+		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidBefore())));
+		stringBuilder.append(", \"notValidAfter\": ");
+		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidAfter())));
 		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
