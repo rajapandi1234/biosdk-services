@@ -126,8 +126,8 @@ public class Utils {
 		}
 	}
 
-	private static String getHashOfBytes(byte[] ba) {
-		return ba == null ? "null" : "\""+ DigestUtils.sha256Hex(ba) + "\"";
+	private static String getHashOfBytes(byte[] byteArray) {
+		return byteArray == null ? "null" : "\""+ DigestUtils.sha256Hex(byteArray) + "\"";
 	}
 	
 	public String toString(ExtractTemplateRequestDto extractTemplateRequestDto) {
