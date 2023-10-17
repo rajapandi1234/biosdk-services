@@ -293,7 +293,7 @@ public class Utils {
 		stringBuilder.append(surroundWithQuote(birInfo.getCreator()));
 		stringBuilder.append(", \"index\": ");
 		stringBuilder.append(surroundWithQuote(birInfo.getIndex()));
-		stringBuilder.append(", \"payload\":");
+		stringBuilder.append(", \"payloadHash\":");
 		stringBuilder.append(getHashOfBytes(birInfo.getPayload()));
 		stringBuilder.append(", \"integrity\":");
 		stringBuilder.append(Boolean.toString(birInfo.getIntegrity()));
