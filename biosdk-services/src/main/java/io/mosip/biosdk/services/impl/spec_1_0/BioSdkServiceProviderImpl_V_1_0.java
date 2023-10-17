@@ -47,7 +47,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     private IBioApiV2 iBioApi;
 
     @Autowired
-    private Utils serviceUtil;
+    private Utils utils;
 
     private Gson gson = new GsonBuilder().serializeNulls().create();
     
@@ -69,7 +69,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         try {
         	logRequest(initRequestDto);
             sdkInfo = iBioApi.init(initRequestDto.getInitParams());
-            logResponse(sdkInfo);
+            logObject(sdkInfo);
         } catch (Throwable e){
             e.printStackTrace();
             logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", e.toString()+" "+e.getMessage());
@@ -199,49 +199,61 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 
 	private void logRequest(ExtractTemplateRequestDto extractTemplateRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug(Utils.toString(extractTemplateRequestDto));
+			logger.debug(utils.toString(extractTemplateRequestDto));
 		}
 	}
     
     private void logRequest(MatchRequestDto matchRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug(Utils.toString(matchRequestDto));
+			logger.debug(utils.toString(matchRequestDto));
 		}
 	}
     
     private void logRequest(InitRequestDto initRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug(Utils.toString(initRequestDto));
+			logger.debug(utils.toString(initRequestDto));
 		}		
 	}
     
     private void logRequest(CheckQualityRequestDto checkQualityRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug(Utils.toString(checkQualityRequestDto));
+			logger.debug(utils.toString(checkQualityRequestDto));
 		}
 	}
     
     private void logRequest(SegmentRequestDto segmentRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug(Utils.toString(segmentRequestDto));
+			logger.debug(utils.toString(segmentRequestDto));
 		}		
 	}
     
     private void logRequest(ConvertFormatRequestDto convertFormatRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug(Utils.toString(convertFormatRequestDto));
+			logger.debug(utils.toString(convertFormatRequestDto));
 		}			
 	}
     
-    private <T> void logResponse(T response) {
+    private <T> void logObject(T response) {
     	if(isLogRequestResponse) {
 			logger.debug(gson.toJson(response));
     	}
 	}
     
+    private void logResponse(Response response) {
+    	if(isLogRequestResponse) {
+    		Object resp = response.getResponse();
+    		if(resp instanceof  BiometricRecord) {
+				BiometricRecord biometricRecord = (BiometricRecord) resp;
+    			logBiometricRecord(biometricRecord);
+    		} else {
+    			logger.debug(gson.toJson(resp));
+    		}
+    	}
+	}
+    
     private void logBiometricRecord(BiometricRecord biometricRecord) {
     	if(isLogRequestResponse) {
-			logger.debug(Utils.toString(biometricRecord));
+			logger.debug(utils.toString(biometricRecord));
     	}
 	}
 
