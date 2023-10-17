@@ -251,7 +251,7 @@ public class Utils {
 		stringBuilder.append(", \"format\": ");
 		stringBuilder.append(stringOf(bdbInfo.getFormat()));
 		stringBuilder.append(", \"encryption\":");
-		stringBuilder.append(Boolean.toString(bdbInfo.getEncryption()));
+		stringBuilder.append(booleanAsString(bdbInfo.getEncryption()));
 		stringBuilder.append(", \"creationDate\": ");
 		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getCreationDate())));
 		stringBuilder.append(", \"notValidBefore\": ");
@@ -296,7 +296,7 @@ public class Utils {
 		stringBuilder.append(", \"payloadHash\":");
 		stringBuilder.append(getHashOfBytes(birInfo.getPayload()));
 		stringBuilder.append(", \"integrity\":");
-		stringBuilder.append(Boolean.toString(birInfo.getIntegrity()));
+		stringBuilder.append(booleanAsString(birInfo.getIntegrity()));
 		stringBuilder.append(", \"creationDate\": ");
 		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getCreationDate())));
 		stringBuilder.append(", \"notValidBefore\": ");
@@ -305,5 +305,9 @@ public class Utils {
 		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidAfter())));
 		stringBuilder.append(" }");
 		return stringBuilder.toString();
+	}
+
+	private static String booleanAsString(Boolean bool) {
+		return bool == null ? "null" : Boolean.toString(bool);
 	}
 }
