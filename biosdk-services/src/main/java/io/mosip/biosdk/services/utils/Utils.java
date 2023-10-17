@@ -59,8 +59,9 @@ public class Utils {
     	if(biometricRecord == null) {
     		stringBuilder.append("null");
 		} else {
-			stringBuilder.append("{\"BiometricRecord\": { ");
-			stringBuilder.append("\"birInfo\": ");
+			stringBuilder.append("{");
+			stringBuilder.append(" \"_modelClass\": \"BiometricRecord\"");
+			stringBuilder.append(", \"birInfo\": ");
 			stringBuilder.append(stringOf(biometricRecord.getBirInfo()));
 			stringBuilder.append(", \"cbeffversion\":");
 			stringBuilder.append(stringOf(biometricRecord.getCbeffversion()));
@@ -73,7 +74,7 @@ public class Utils {
 			} else {
 				appendString(segments.stream().iterator(), stringBuilder, this::appendString);
 			}
-			stringBuilder.append(" }}");
+			stringBuilder.append(" }");
 		}
 	}
     
@@ -97,8 +98,9 @@ public class Utils {
 		if(bir == null) {
     		stringBuilder.append("null");
 		} else {
-			stringBuilder.append("{ \"BIR\": {");
-			stringBuilder.append("\"bdbInfo\": ");
+			stringBuilder.append("{");
+			stringBuilder.append(" \"_modelClass\": \"BIR\"");
+			stringBuilder.append(", \"bdbInfo\": ");
 			stringBuilder.append(stringOf(bir.getBdbInfo()));
 			stringBuilder.append(", \"birInfo\": ");
 			stringBuilder.append(stringOf(bir.getBirInfo()));
@@ -114,7 +116,7 @@ public class Utils {
 			stringBuilder.append(stringOf(bir.getVersion()));
 			stringBuilder.append(", \"bdbHash\": ");
 			stringBuilder.append(bir.getBdb() == null ? "null" : "\""+ DigestUtils.sha256Hex(bir.getBdb()) + "\"");
-			stringBuilder.append(" }}");
+			stringBuilder.append(" }");
 		}
 	}
 	
@@ -123,14 +125,15 @@ public class Utils {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{\"ExtractTemplateRequestDto\": { ");
-		stringBuilder.append("\"flags:\"");
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"ExtractTemplateRequestDto\"");
+		stringBuilder.append(", \"flags:\"");
 		stringBuilder.append(stringOf(extractTemplateRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToExtract\": ");
 		stringBuilder.append(stringOf(extractTemplateRequestDto.getModalitiesToExtract()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(extractTemplateRequestDto.getSample(), stringBuilder);
-		stringBuilder.append(" }}");
+		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
 
@@ -139,8 +142,9 @@ public class Utils {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{\"MatchRequestDto\": { ");
-		stringBuilder.append("\"flags\":");
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"MatchRequestDto\"");
+		stringBuilder.append(", \"flags\":");
 		stringBuilder.append(stringOf(matchRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToMatch\": ");
 		stringBuilder.append(stringOf(matchRequestDto.getModalitiesToMatch()));
@@ -148,7 +152,7 @@ public class Utils {
 		appendString(matchRequestDto.getSample(), stringBuilder);
 		stringBuilder.append(", \"gallery\": ");
 		appendString(Arrays.stream(matchRequestDto.getGallery()).iterator(), stringBuilder, this::appendString);
-		stringBuilder.append(" }}");
+		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
 
@@ -157,10 +161,11 @@ public class Utils {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{\"InitRequestDto\": { ");
-		stringBuilder.append("\"initParams\":");
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"InitRequestDto\"");
+		stringBuilder.append(", \"initParams\":");
 		stringBuilder.append(stringOf(initRequestDto));
-		stringBuilder.append(" }}");
+		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
 
@@ -169,14 +174,15 @@ public class Utils {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{\"CheckQualityRequestDto\": { ");
-		stringBuilder.append("\"flags\":");
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"CheckQualityRequestDto\"");
+		stringBuilder.append(", \"flags\":");
 		stringBuilder.append(stringOf(checkQualityRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToCheck\": ");
 		stringBuilder.append(stringOf(checkQualityRequestDto.getModalitiesToCheck()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(checkQualityRequestDto.getSample(), stringBuilder);
-		stringBuilder.append(" }}");
+		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
 
@@ -185,14 +191,15 @@ public class Utils {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{\"SegmentRequestDto\": { ");
-		stringBuilder.append("\"flags\":");
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"SegmentRequestDto\"");
+		stringBuilder.append(", \"flags\":");
 		stringBuilder.append(stringOf(segmentRequestDto.getFlags()));
 		stringBuilder.append(", \"modalitiesToSegment\": ");
 		stringBuilder.append(stringOf(segmentRequestDto.getModalitiesToSegment()));
 		stringBuilder.append(", \"sample\": ");
 		appendString(segmentRequestDto.getSample(), stringBuilder);
-		stringBuilder.append(" }}");
+		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
 
@@ -201,8 +208,9 @@ public class Utils {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("{\"ConvertFormatRequestDto\": { ");
-		stringBuilder.append("\"sourceFormat\":");
+		stringBuilder.append("{");
+		stringBuilder.append(" \"_modelClass\": \"ConvertFormatRequestDto\"");
+		stringBuilder.append(", \"sourceFormat\":");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getSourceFormat()));
 		stringBuilder.append(", \"targetFormat\": ");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetFormat()));
@@ -214,7 +222,7 @@ public class Utils {
 		stringBuilder.append(", \"targetParams\": ");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetParams()));
 		appendString(convertFormatRequestDto.getSample(), stringBuilder);
-		stringBuilder.append(" }}");
+		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
 }
