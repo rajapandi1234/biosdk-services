@@ -78,6 +78,10 @@ public class Utils {
 		}
 	}
     
+    private String surroundWithQuote(String str) {
+    	return String.format("\"%s\"", gson.toJson(str));
+    }
+    
     private String stringOf(Object obj) {
     	return gson.toJson(obj);
     }
@@ -211,9 +215,9 @@ public class Utils {
 		stringBuilder.append("{");
 		stringBuilder.append(" \"_modelClass\": \"ConvertFormatRequestDto\"");
 		stringBuilder.append(", \"sourceFormat\":");
-		stringBuilder.append(stringOf(convertFormatRequestDto.getSourceFormat()));
+		stringBuilder.append(surroundWithQuote(convertFormatRequestDto.getSourceFormat()));
 		stringBuilder.append(", \"targetFormat\": ");
-		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetFormat()));
+		stringBuilder.append(surroundWithQuote(convertFormatRequestDto.getTargetFormat()));
 		stringBuilder.append(", \"modalitiesToConvert\": ");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getModalitiesToConvert()));
 		stringBuilder.append(", \"sample\": ");
