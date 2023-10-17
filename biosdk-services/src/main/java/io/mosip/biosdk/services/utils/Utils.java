@@ -1,6 +1,7 @@
 package io.mosip.biosdk.services.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -298,13 +299,17 @@ public class Utils {
 		stringBuilder.append(", \"integrity\":");
 		stringBuilder.append(booleanAsString(birInfo.getIntegrity()));
 		stringBuilder.append(", \"creationDate\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getCreationDate())));
+		stringBuilder.append(surroundWithQuote(dateAsString(birInfo.getCreationDate())));
 		stringBuilder.append(", \"notValidBefore\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidBefore())));
+		stringBuilder.append(surroundWithQuote(dateAsString(birInfo.getNotValidBefore())));
 		stringBuilder.append(", \"notValidAfter\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidAfter())));
+		stringBuilder.append(surroundWithQuote(dateAsString(birInfo.getNotValidAfter())));
 		stringBuilder.append(" }");
 		return stringBuilder.toString();
+	}
+
+	private String dateAsString(LocalDateTime localDateTime) {
+		return localDateTime == null ? "null" : DateUtils.formatToISOString(localDateTime);
 	}
 
 	private static String booleanAsString(Boolean bool) {
