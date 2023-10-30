@@ -1,6 +1,7 @@
 package io.mosip.biosdk.services.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -80,10 +81,6 @@ public class Utils {
 		}
 	}
     
-    private String surroundWithQuote(String str) {
-    	return str == null ? "null" : String.format("\"%s\"", gson.toJson(str));
-    }
-    
     private String stringOf(Object obj) {
     	return obj == null ? "null" : gson.toJson(obj);
     }
@@ -109,7 +106,7 @@ public class Utils {
 			stringBuilder.append(", \"bdbInfo\": ");
 			stringBuilder.append(toString(bir.getBdbInfo()));
 			stringBuilder.append(", \"birInfo\": ");
-			stringBuilder.append(stringOf(bir.getBirInfo()));
+			stringBuilder.append(toString(bir.getBirInfo()));
 			stringBuilder.append(", \"cbeffversion\": ");
 			stringBuilder.append(stringOf(bir.getCbeffversion()));
 			stringBuilder.append(", \"others\": ");
@@ -221,9 +218,9 @@ public class Utils {
 		stringBuilder.append("{");
 		stringBuilder.append(" \"_modelClass\": \"ConvertFormatRequestDto\"");
 		stringBuilder.append(", \"sourceFormat\":");
-		stringBuilder.append(surroundWithQuote(convertFormatRequestDto.getSourceFormat()));
+		stringBuilder.append(stringOf(convertFormatRequestDto.getSourceFormat()));
 		stringBuilder.append(", \"targetFormat\": ");
-		stringBuilder.append(surroundWithQuote(convertFormatRequestDto.getTargetFormat()));
+		stringBuilder.append(stringOf(convertFormatRequestDto.getTargetFormat()));
 		stringBuilder.append(", \"modalitiesToConvert\": ");
 		stringBuilder.append(stringOf(convertFormatRequestDto.getModalitiesToConvert()));
 		stringBuilder.append(", \"sample\": ");
@@ -247,17 +244,17 @@ public class Utils {
 		stringBuilder.append(", \"challengeResponseHash\":");
 		stringBuilder.append(getHashOfBytes(bdbInfo.getChallengeResponse()));
 		stringBuilder.append(", \"index\": ");
-		stringBuilder.append(surroundWithQuote(bdbInfo.getIndex()));
+		stringBuilder.append(stringOf(bdbInfo.getIndex()));
 		stringBuilder.append(", \"format\": ");
 		stringBuilder.append(stringOf(bdbInfo.getFormat()));
 		stringBuilder.append(", \"encryption\":");
 		stringBuilder.append(booleanAsString(bdbInfo.getEncryption()));
 		stringBuilder.append(", \"creationDate\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getCreationDate())));
+		stringBuilder.append(stringOf(dateAsString(bdbInfo.getCreationDate())));
 		stringBuilder.append(", \"notValidBefore\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getNotValidBefore())));
+		stringBuilder.append(stringOf(dateAsString(bdbInfo.getNotValidBefore())));
 		stringBuilder.append(", \"notValidAfter\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(bdbInfo.getNotValidAfter())));
+		stringBuilder.append(stringOf(dateAsString(bdbInfo.getNotValidAfter())));
 		stringBuilder.append(", \"type\": ");
 		stringBuilder.append(stringOf(bdbInfo.getType()));
 		stringBuilder.append(", \"subtype\": ");
@@ -290,21 +287,25 @@ public class Utils {
 		stringBuilder.append("{");
 		stringBuilder.append(" \"_modelClass\": \"BIRInfo\"");
 		stringBuilder.append(", \"creator\": ");
-		stringBuilder.append(surroundWithQuote(birInfo.getCreator()));
+		stringBuilder.append(stringOf(birInfo.getCreator()));
 		stringBuilder.append(", \"index\": ");
-		stringBuilder.append(surroundWithQuote(birInfo.getIndex()));
+		stringBuilder.append(stringOf(birInfo.getIndex()));
 		stringBuilder.append(", \"payloadHash\":");
 		stringBuilder.append(getHashOfBytes(birInfo.getPayload()));
 		stringBuilder.append(", \"integrity\":");
 		stringBuilder.append(booleanAsString(birInfo.getIntegrity()));
 		stringBuilder.append(", \"creationDate\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getCreationDate())));
+		stringBuilder.append(stringOf(dateAsString(birInfo.getCreationDate())));
 		stringBuilder.append(", \"notValidBefore\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidBefore())));
+		stringBuilder.append(stringOf(dateAsString(birInfo.getNotValidBefore())));
 		stringBuilder.append(", \"notValidAfter\": ");
-		stringBuilder.append(surroundWithQuote(DateUtils.formatToISOString(birInfo.getNotValidAfter())));
+		stringBuilder.append(stringOf(dateAsString(birInfo.getNotValidAfter())));
 		stringBuilder.append(" }");
 		return stringBuilder.toString();
+	}
+
+	private String dateAsString(LocalDateTime localDateTime) {
+		return localDateTime == null ? "null" : DateUtils.formatToISOString(localDateTime);
 	}
 
 	private static String booleanAsString(Boolean bool) {

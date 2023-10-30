@@ -27,11 +27,6 @@ import io.mosip.kernel.biometrics.model.Response;
 import io.mosip.kernel.biometrics.model.SDKInfo;
 import io.mosip.kernel.biometrics.spi.IBioApiV2;
 import io.mosip.kernel.core.logger.spi.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import static io.mosip.biosdk.services.constants.AppConstants.LOGGER_IDTYPE;
-import static io.mosip.biosdk.services.constants.AppConstants.LOGGER_SESSIONID;
 
 @Component
 public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
@@ -199,43 +194,43 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 
 	private void logRequest(ExtractTemplateRequestDto extractTemplateRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug(utils.toString(extractTemplateRequestDto));
+			logger.debug("REQUEST: " + utils.toString(extractTemplateRequestDto));
 		}
 	}
     
     private void logRequest(MatchRequestDto matchRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug(utils.toString(matchRequestDto));
+			logger.debug("REQUEST: " + utils.toString(matchRequestDto));
 		}
 	}
     
     private void logRequest(InitRequestDto initRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug(utils.toString(initRequestDto));
+			logger.debug("REQUEST: " + utils.toString(initRequestDto));
 		}		
 	}
     
     private void logRequest(CheckQualityRequestDto checkQualityRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug(utils.toString(checkQualityRequestDto));
+			logger.debug("REQUEST: " + utils.toString(checkQualityRequestDto));
 		}
 	}
     
     private void logRequest(SegmentRequestDto segmentRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug(utils.toString(segmentRequestDto));
+			logger.debug("REQUEST: " + utils.toString(segmentRequestDto));
 		}		
 	}
     
     private void logRequest(ConvertFormatRequestDto convertFormatRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug(utils.toString(convertFormatRequestDto));
+			logger.debug("REQUEST: " + utils.toString(convertFormatRequestDto));
 		}			
 	}
     
     private <T> void logObject(T response) {
     	if(isLogRequestResponse) {
-			logger.debug(gson.toJson(response));
+			logger.debug(response.getClass() + ": " + gson.toJson(response));
     	}
 	}
     
@@ -244,16 +239,16 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     		Object resp = response.getResponse();
     		if(resp instanceof  BiometricRecord) {
 				BiometricRecord biometricRecord = (BiometricRecord) resp;
-    			logBiometricRecord(biometricRecord);
+    			logBiometricRecord("Response BiometricRecord: ", biometricRecord);
     		} else {
-    			logger.debug(gson.toJson(resp));
+    			logger.debug("Response: " + gson.toJson(resp));
     		}
     	}
 	}
     
-    private void logBiometricRecord(BiometricRecord biometricRecord) {
+    private void logBiometricRecord(String prefix, BiometricRecord biometricRecord) {
     	if(isLogRequestResponse) {
-			logger.debug(utils.toString(biometricRecord));
+			logger.debug(prefix + utils.toString(biometricRecord));
     	}
 	}
 
