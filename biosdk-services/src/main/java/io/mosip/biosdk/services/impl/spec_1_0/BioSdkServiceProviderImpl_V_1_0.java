@@ -134,6 +134,20 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
                     extractTemplateRequestDto.getModalitiesToExtract(),
                     extractTemplateRequestDto.getFlags()
             );
+	    if(!validateExtractTemplateResponse(response))
+            {
+            	StringBuilder info = new StringBuilder();
+            	info.append("*********************************************************\n");
+            	info.append("\nRequest \t\t:: " + request.getRequest());
+            	info.append("\nResponse Code  \t\t:: " + response.getStatusCode());
+            	info.append("\nResponse Status\t\t:: " + response.getStatusMessage());
+            	info.append("\nResponse \t\t:: " + response.getResponse());
+            	info.append("\n*********************************************************\n");
+    	        logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "extractTemplate: Invalid Info  :: ", info.toString());        			
+    		response.setStatusCode(ResponseStatus.UNKNOWN_ERROR.getStatusCode());
+		response.setStatusMessage("Extract Template validation failed on response from sdk");
+
+            }
             logResponse(response);
         } catch (Throwable e){
             e.printStackTrace();
@@ -239,7 +253,21 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 			logger.debug(Utils.toString(biometricRecord));
     	}
 	}
-
+ private boolean validateExtractTemplateResponse(Response<?> response)
+    {
+        //Validation
+        if (response != null && response.getResponse() != null)
+        {
+    		BiometricRecord biometricRecord = (BiometricRecord)response.getResponse();
+            //Should have Valid BIR Segments
+    		List<BIR> segments = biometricRecord.getSegments();
+    		if (segments == null || (segments != null && segments.size() == 0))
+    			return false;
+    		return true;
+        }
+		return false;
+    }
+	
     private String decode(String data){
         try {
             return Utils.base64Decode(data);
