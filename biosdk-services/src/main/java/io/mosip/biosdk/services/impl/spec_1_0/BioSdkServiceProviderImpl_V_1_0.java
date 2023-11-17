@@ -134,7 +134,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
                     extractTemplateRequestDto.getModalitiesToExtract(),
                     extractTemplateRequestDto.getFlags()
             );
-	    if(!validateExtractTemplateResponse(request, response))
+	    if(!validateExtractTemplateResponse(response))
             {
             	StringBuilder info = new StringBuilder();
             	info.append("*********************************************************\n");
@@ -251,7 +251,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 			logger.debug(Utils.toString(biometricRecord));
     	}
 	}
- private boolean validateExtractTemplateResponse(RequestDto request, Response<?> response)
+ private boolean validateExtractTemplateResponse(Response<?> response)
     {
         //Validation
         if (response != null && response.getResponse() != null)
