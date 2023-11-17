@@ -144,7 +144,9 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
             	info.append("\nResponse \t\t:: " + response.getResponse());
             	info.append("\n*********************************************************\n");
     	        logger.info(LOGGER_SESSIONID, LOGGER_IDTYPE, "extractTemplate: Invalid Info  :: ", info.toString());        			
-    			response.setStatusCode(ResponseStatus.UNKNOWN_ERROR.getStatusCode());
+    		response.setStatusCode(ResponseStatus.UNKNOWN_ERROR.getStatusCode());
+		response.setStatusMessage("Extract Template validation failed on response from sdk");
+
             }
             logResponse(response);
         } catch (Throwable e){
