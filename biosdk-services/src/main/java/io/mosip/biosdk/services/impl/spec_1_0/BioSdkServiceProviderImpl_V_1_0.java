@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 
 import io.mosip.biosdk.services.config.LoggerConfig;
 import io.mosip.biosdk.services.constants.ErrorMessages;
+import io.mosip.biosdk.services.constants.ResponseStatus;
 import io.mosip.biosdk.services.dto.RequestDto;
 import io.mosip.biosdk.services.exceptions.BioSDKException;
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.CheckQualityRequestDto;
