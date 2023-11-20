@@ -22,11 +22,13 @@ import io.mosip.biosdk.services.impl.spec_1_0.dto.request.MatchRequestDto;
 import io.mosip.biosdk.services.impl.spec_1_0.dto.request.SegmentRequestDto;
 import io.mosip.biosdk.services.spi.BioSdkServiceProvider;
 import io.mosip.biosdk.services.utils.Utils;
+import io.mosip.kernel.biometrics.entities.BIR;
 import io.mosip.kernel.biometrics.entities.BiometricRecord;
 import io.mosip.kernel.biometrics.model.Response;
 import io.mosip.kernel.biometrics.model.SDKInfo;
 import io.mosip.kernel.biometrics.spi.IBioApi;
 import io.mosip.kernel.core.logger.spi.Logger;
+import java.util.List;
 
 @Component
 public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
