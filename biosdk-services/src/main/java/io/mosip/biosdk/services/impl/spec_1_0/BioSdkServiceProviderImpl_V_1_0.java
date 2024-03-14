@@ -55,7 +55,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         InitRequestDto initRequestDto = gson.fromJson(decryptedRequest, InitRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"init: ", "json to dto successful");
         try {
-        	logRequest(initRequestDto);
+	    logRequest(initRequestDto);
             sdkInfo = iBioApi.init(initRequestDto.getInitParams());
             logObject(sdkInfo);
         } catch (Throwable e){
@@ -65,7 +65,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         return sdkInfo;
     }
 
-	@Override
+    @Override
     public Object checkQuality(RequestDto request) {
         Response response;
         String decryptedRequest = decode(request.getRequest());
@@ -73,7 +73,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         CheckQualityRequestDto checkQualityRequestDto = gson.fromJson(decryptedRequest, CheckQualityRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"checkQuality: ", "json to dto successful");
         try {
-        	logRequest(checkQualityRequestDto);
+            logRequest(checkQualityRequestDto);
             response = iBioApi.checkQuality(
                     checkQualityRequestDto.getSample(),
                     checkQualityRequestDto.getModalitiesToCheck(),
@@ -95,7 +95,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         MatchRequestDto matchRequestDto = gson.fromJson(decryptedRequest, MatchRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"match: ", "json to dto successful");
         try {
-        	logRequest(matchRequestDto);
+            logRequest(matchRequestDto);
             response = iBioApi.match(
                     matchRequestDto.getSample(),
                     matchRequestDto.getGallery(),
@@ -118,7 +118,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         ExtractTemplateRequestDto extractTemplateRequestDto = gson.fromJson(decryptedRequest, ExtractTemplateRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"extractTemplate: ", "json to dto successful");
         try {
-        	logRequest(extractTemplateRequestDto);
+            logRequest(extractTemplateRequestDto);
             response = iBioApi.extractTemplate(
                     extractTemplateRequestDto.getSample(),
                     extractTemplateRequestDto.getModalitiesToExtract(),
@@ -132,7 +132,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         return response;
     }
 
-	@Override
+    @Override
     public Object segment(RequestDto request) {
         Response response;
         String decryptedRequest = decode(request.getRequest());
@@ -140,7 +140,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         SegmentRequestDto segmentRequestDto = gson.fromJson(decryptedRequest, SegmentRequestDto.class);
         logger.debug(LOGGER_SESSIONID, LOGGER_IDTYPE,"segment: ", "json to dto successful");
         try {
-        	logRequest(segmentRequestDto);
+            logRequest(segmentRequestDto);
             response = iBioApi.segment(
                     segmentRequestDto.getSample(),
                     segmentRequestDto.getModalitiesToSegment(),
@@ -154,7 +154,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
         return response;
     }
 
-	@Override
+    @Override
     public Object convertFormat(RequestDto request) {
     	Response response;
         String decryptedRequest = decode(request.getRequest());
@@ -225,7 +225,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     	if(isLogRequestResponse) {
     		Object resp = response.getResponse();
     		if(resp instanceof  BiometricRecord) {
-				BiometricRecord biometricRecord = (BiometricRecord) resp;
+			BiometricRecord biometricRecord = (BiometricRecord) resp;
     			logBiometricRecord("Response BiometricRecord: ", biometricRecord);
     		} else {
     			logger.debug("Response: " + gson.toJson(resp));
