@@ -31,36 +31,36 @@ import io.mosip.kernel.core.util.DateUtils;
 
 @Component
 public class Utils {
-    @Autowired
-    private Gson gson;
+	@Autowired
+	private Gson gson;
 
-    private String utcDateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+	private String utcDateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-    public String getCurrentResponseTime() {
-        return DateUtils.formatDate(new Date(System.currentTimeMillis()), utcDateTimePattern);
-    }
+	public String getCurrentResponseTime() {
+		return DateUtils.formatDate(new Date(System.currentTimeMillis()), utcDateTimePattern);
+	}
 
-    public RequestDto getRequestInfo(String request) throws ParseException {
-        return gson.fromJson(request, RequestDto.class);
-    }
+	public RequestDto getRequestInfo(String request) throws ParseException {
+		return gson.fromJson(request, RequestDto.class);
+	}
 
-	public static String base64Decode(String data){
-        return new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
-    }
-	
+	public static String base64Decode(String data) {
+		return new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
+	}
+
 	public String toString(BiometricRecord biometricRecord) {
-		if(biometricRecord == null) {
+		if (biometricRecord == null) {
 			return "null";
 		}
-		
+
 		StringBuilder stringBuilder = new StringBuilder();
 		appendString(biometricRecord, stringBuilder);
 		return stringBuilder.toString();
 	}
 
-    private void appendString(BiometricRecord biometricRecord, StringBuilder stringBuilder) {
-    	if(biometricRecord == null) {
-    		stringBuilder.append("null");
+	private void appendString(BiometricRecord biometricRecord, StringBuilder stringBuilder) {
+		if (biometricRecord == null) {
+			stringBuilder.append("null");
 		} else {
 			stringBuilder.append("{");
 			stringBuilder.append(" \"_modelClass\": \"BiometricRecord\"");
@@ -72,25 +72,26 @@ public class Utils {
 			stringBuilder.append(stringOf(biometricRecord.getVersion()));
 			stringBuilder.append(", \"segments\":");
 			List<BIR> segments = biometricRecord.getSegments();
-			if(segments == null) {
-	    		stringBuilder.append("null");
+			if (segments == null) {
+				stringBuilder.append("null");
 			} else {
 				appendString(segments.stream().iterator(), stringBuilder, this::appendString);
 			}
 			stringBuilder.append(" }");
 		}
 	}
-    
-    private String stringOf(Object obj) {
-    	return obj == null ? "null" : gson.toJson(obj);
-    }
 
-	private <T> void appendString(Iterator<T> iterator, StringBuilder stringBuilder, BiConsumer<T, StringBuilder> appendBiConsumer) {
+	private String stringOf(Object obj) {
+		return obj == null ? "null" : gson.toJson(obj);
+	}
+
+	private <T> void appendString(Iterator<T> iterator, StringBuilder stringBuilder,
+			BiConsumer<T, StringBuilder> appendBiConsumer) {
 		stringBuilder.append("[ ");
 		while (iterator.hasNext()) {
 			T element = iterator.next();
 			appendBiConsumer.accept(element, stringBuilder);
-			if(iterator.hasNext()) {
+			if (iterator.hasNext()) {
 				stringBuilder.append(", ");
 			}
 		}
@@ -98,8 +99,8 @@ public class Utils {
 	}
 
 	private void appendString(BIR bir, StringBuilder stringBuilder) {
-		if(bir == null) {
-    		stringBuilder.append("null");
+		if (bir == null) {
+			stringBuilder.append("null");
 		} else {
 			stringBuilder.append("{");
 			stringBuilder.append(" \"_modelClass\": \"BIR\"");
@@ -124,11 +125,11 @@ public class Utils {
 	}
 
 	private static String getHashOfBytes(byte[] byteArray) {
-		return byteArray == null ? "null" : "\""+ DigestUtils.sha256Hex(byteArray) + "\"";
+		return byteArray == null ? "null" : "\"" + DigestUtils.sha256Hex(byteArray) + "\"";
 	}
-	
+
 	public String toString(ExtractTemplateRequestDto extractTemplateRequestDto) {
-		if(extractTemplateRequestDto == null) {
+		if (extractTemplateRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -145,7 +146,7 @@ public class Utils {
 	}
 
 	public String toString(MatchRequestDto matchRequestDto) {
-		if(matchRequestDto == null) {
+		if (matchRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -164,7 +165,7 @@ public class Utils {
 	}
 
 	public String toString(InitRequestDto initRequestDto) {
-		if(initRequestDto == null) {
+		if (initRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -177,7 +178,7 @@ public class Utils {
 	}
 
 	public String toString(CheckQualityRequestDto checkQualityRequestDto) {
-		if(checkQualityRequestDto == null) {
+		if (checkQualityRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -194,7 +195,7 @@ public class Utils {
 	}
 
 	public String toString(SegmentRequestDto segmentRequestDto) {
-		if(segmentRequestDto == null) {
+		if (segmentRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -211,7 +212,7 @@ public class Utils {
 	}
 
 	public String toString(ConvertFormatRequestDto convertFormatRequestDto) {
-		if(convertFormatRequestDto == null) {
+		if (convertFormatRequestDto == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -233,9 +234,9 @@ public class Utils {
 		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
-	
+
 	public String toString(BDBInfo bdbInfo) {
-		if(bdbInfo == null) {
+		if (bdbInfo == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
@@ -278,9 +279,9 @@ public class Utils {
 		stringBuilder.append(" }");
 		return stringBuilder.toString();
 	}
-	
+
 	public String toString(BIRInfo birInfo) {
-		if(birInfo == null) {
+		if (birInfo == null) {
 			return "null";
 		}
 		StringBuilder stringBuilder = new StringBuilder();
