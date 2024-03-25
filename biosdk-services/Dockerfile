@@ -9,12 +9,32 @@ ARG active_profile
 # can be passed during Docker build as build time environment for config server URL
 ARG spring_config_url
 
+# can be passed during Docker build as build time environment for application name
+ARG spring_application_name
+
+# can be passed during Docker build as build time environment for config name
+ARG spring_cloud_config_name
+
+# can be passed during Docker build as build time environment for context path
+ARG server_servlet_context
+
 # environment variable to pass github branch to pickup configuration from, at docker runtime
 ENV spring_config_label_env=${spring_config_label}
+
 # environment variable to pass active profile such as DEV, QA etc at docker runtime
 ENV active_profile_env=${active_profile}
+
 # environment variable to pass spring configuration url, at docker runtime
 ENV spring_config_url_env=${spring_config_url}
+
+# environment variable to pass spring application name, at docker runtime
+ENV spring_application_name_env=${spring_application_name}
+
+# environment variable to pass spring config name, at docker runtime
+ENV spring_cloud_config_name_env=${spring_cloud_config_name}
+
+# environment variable to pass spring context path , at docker runtime
+ENV server_servlet_context_env=${server_servlet_context}
 
 ARG biosdk_zip_url
 
