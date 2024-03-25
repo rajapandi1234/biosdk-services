@@ -48,7 +48,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     private IBioApiV2 iBioApi;
 
     @Autowired
-    private Utils serviceUtil;
+    private Utils utils;
 
     private Gson gson = new GsonBuilder().serializeNulls().create();
     
@@ -194,37 +194,37 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 
 	private void logRequest(ExtractTemplateRequestDto extractTemplateRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug("REQUEST: " + serviceUtil.toString(extractTemplateRequestDto));
+			logger.debug("REQUEST: " + utils.toString(extractTemplateRequestDto));
 		}
 	}
     
     private void logRequest(MatchRequestDto matchRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug("REQUEST: " + serviceUtil.toString(matchRequestDto));
+			logger.debug("REQUEST: " + utils.toString(matchRequestDto));
 		}
 	}
     
     private void logRequest(InitRequestDto initRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug("REQUEST: " + serviceUtil.toString(initRequestDto));
+			logger.debug("REQUEST: " + utils.toString(initRequestDto));
 		}		
 	}
     
     private void logRequest(CheckQualityRequestDto checkQualityRequestDto) {
 		if(isLogRequestResponse) {
-			logger.debug("REQUEST: " + serviceUtil.toString(checkQualityRequestDto));
+			logger.debug("REQUEST: " + utils.toString(checkQualityRequestDto));
 		}
 	}
     
     private void logRequest(SegmentRequestDto segmentRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug("REQUEST: " + serviceUtil.toString(segmentRequestDto));
+			logger.debug("REQUEST: " + utils.toString(segmentRequestDto));
 		}		
 	}
     
     private void logRequest(ConvertFormatRequestDto convertFormatRequestDto) {
     	if(isLogRequestResponse) {
-			logger.debug("REQUEST: " + serviceUtil.toString(convertFormatRequestDto));
+			logger.debug("REQUEST: " + utils.toString(convertFormatRequestDto));
 		}			
 	}
     
@@ -248,7 +248,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
     
     private void logBiometricRecord(String prefix, BiometricRecord biometricRecord) {
     	if(isLogRequestResponse) {
-			logger.debug(prefix + serviceUtil.toString(biometricRecord));
+			logger.debug(prefix + utils.toString(biometricRecord));
     	}
 	}
 
