@@ -29,7 +29,26 @@
 			<organizationUrl>https://mosip.io</organizationUrl>
 		</developer>
 	</developers>
-
+	<repositories>
+        	<repository>
+            		<id>central</id>
+            		<name>MavenCentral</name>
+            		<layout>default</layout>
+            		<url>https://repo1.maven.org/maven2</url>
+            		<snapshots>
+            			<enabled>false</enabled>
+            		</snapshots>
+        	</repository>
+        	<repository>
+            		<id>ossrh</id>
+            		<name>MavenSnapshot</name>
+            		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            		<layout>default</layout>
+            		<snapshots>
+            		<enabled>true</enabled>
+            		</snapshots>
+        	</repository>
+    	</repositories>
 	<description>Sample implementation of biometrics SDK services</description>
 	<url>https://github.com/mosip/biosdk-services</url>
 
@@ -184,7 +203,7 @@
 				</executions>
 				<configuration>
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
-					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
 					<includeOnlyProperties>
 						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
 						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
