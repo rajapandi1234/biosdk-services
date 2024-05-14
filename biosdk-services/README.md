@@ -4,7 +4,7 @@ This service provides implementation of IBioAPI over REST. Bio SDK client is use
 
 ## Requirements:
 * Java version = 21.X.X
-* Maven version >= 3.6
+* Maven version >= 3.9.6
 
 ## Run jar directly
 
