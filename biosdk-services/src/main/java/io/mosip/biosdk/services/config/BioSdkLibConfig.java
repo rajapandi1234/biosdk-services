@@ -10,11 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class BioSdkLibConfig {
     private static final Logger logger = LoggerFactory.getLogger(BioSdkLibConfig.class);
+
     @Autowired
     private Environment env;
 
@@ -27,13 +28,13 @@ public class BioSdkLibConfig {
 		logger.info("Biosdk class: " + sdkClass);
         if (StringUtils.isNotBlank(sdkClass)) {
             logger.debug("validating Bio SDK Class is present or not");
-            Class.forName(this.env.getProperty("biosdk_bioapi_impl"));
+            Class.forName(sdkClass);
         }
 
         logger.debug("validateBioSdkLib: Bio SDK Class is not provided");
     }
 
-    @Bean
+	@Bean
     @Lazy
     public IBioApiV2 iBioApi() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     	String sdkClass = this.env.getProperty("biosdk_bioapi_impl");

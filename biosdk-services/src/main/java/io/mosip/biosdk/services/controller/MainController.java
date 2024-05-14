@@ -15,6 +15,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+//import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameter;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -26,7 +29,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
+//import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,8 +78,8 @@ public class MainController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Initialization successful") })
     public ResponseEntity<String> init(
             @Validated @RequestBody(required = true) RequestDto request,
-            @ApiIgnore Errors errors) {
-        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+            @Parameter(hidden = true) Errors errors) {
+        ResponseDto<Object> responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
@@ -96,8 +99,8 @@ public class MainController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Match successful") })
     public ResponseEntity<String> match(
             @Validated @RequestBody(required = true) RequestDto request,
-            @ApiIgnore Errors errors) {
-        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+            @Parameter(hidden = true) Errors errors) {
+        ResponseDto<Object> responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
@@ -117,8 +120,8 @@ public class MainController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Check successful") })
     public ResponseEntity<String> checkQuality(
             @Validated @RequestBody(required = true) RequestDto request,
-            @ApiIgnore Errors errors) {
-        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+            @Parameter(hidden = true) Errors errors) {
+        ResponseDto<Object> responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
@@ -138,8 +141,8 @@ public class MainController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Extract successful") })
     public ResponseEntity<String> extractTemplate(
             @Validated @RequestBody(required = true) RequestDto request,
-            @ApiIgnore Errors errors) {
-        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+            @Parameter(hidden = true) Errors errors) {
+        ResponseDto<Object> responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
@@ -159,8 +162,8 @@ public class MainController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Convert successful") })
     public ResponseEntity<String> convertFormat(
             @Validated @RequestBody(required = true) RequestDto request,
-            @ApiIgnore Errors errors) {
-        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+            @Parameter(hidden = true) Errors errors) {
+        ResponseDto<Object> responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
@@ -180,8 +183,8 @@ public class MainController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Segment successful") })
     public ResponseEntity<String> segment(
             @Validated @RequestBody(required = true) RequestDto request,
-            @ApiIgnore Errors errors) {
-        ResponseDto responseDto = generateResponseTemplate(request.getVersion());
+            @Parameter(hidden = true) Errors errors) {
+        ResponseDto<Object> responseDto = generateResponseTemplate(request.getVersion());
         try {
             responseDto.setVersion(request.getVersion());
             BioSdkServiceProvider bioSdkServiceProviderImpl = null;
@@ -196,8 +199,8 @@ public class MainController {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(responseDto));
     }
 
-    private ResponseDto generateResponseTemplate(String version){
-        ResponseDto responseDto = new ResponseDto();
+    private ResponseDto<Object> generateResponseTemplate(String version){
+        ResponseDto<Object> responseDto = new ResponseDto<Object>();
         responseDto.setVersion(version);
         responseDto.setResponsetime(serviceUtil.getCurrentResponseTime());
         responseDto.setErrors(new ArrayList<ErrorDto>());
