@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Built by MOSIP team
 # Script to configure the BioSDK
 set -e
