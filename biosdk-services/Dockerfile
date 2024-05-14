@@ -94,7 +94,7 @@ USER ${container_user_uid}:${container_user_gid}
 
 EXPOSE 9099
 
-ENTRYPOINT ["/home/${container_user}/configure_biosdk.sh"]
+ENTRYPOINT ["/home/mosip/configure_biosdk.sh"]
 
 CMD echo $biosdk_bioapi_impl ; \
 java -Dloader.path="${loader_path_env}"  -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED -jar biosdk-services.jar
