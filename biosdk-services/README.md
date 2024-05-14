@@ -4,7 +4,7 @@ This service provides a mock implementation of Bio-SDK REST Service. It by defau
 
 ## Requirements:
 * Java version = 21.X.X
-* Maven version >= 3.6
+* Maven version >= 3.9.6
 
 ## Run jar directly
 
