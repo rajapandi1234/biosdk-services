@@ -5,8 +5,7 @@ set -e
 
 echo "starting downloading zip file $biosdk_zip_file_path"
 
-# wget -q --show-progress "$biosdk_zip_file_path"
-curl -# -o "$biosdk_zip_file_path"
+wget -q "$biosdk_zip_file_path"
 
 echo "Downloaded $biosdk_zip_file_path"
 
