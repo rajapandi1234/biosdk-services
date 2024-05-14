@@ -3,7 +3,7 @@
 This service provides a mock implementation of Bio-SDK REST Service. It by default loads [Mock BIO SDK](https://github.com/mosip/mosip-mock-services/tree/master/mock-sdk) internally on the startup and exposes the endpoints to perform 1:N match, segmentation, extraction as per the [IBioAPI](https://github.com/mosip/commons/blob/master/kernel/kernel-biometrics-api/src/main/java/io/mosip/kernel/biometrics/spi/IBioApiV2.java). This can be configured to load a different JAR that has a different implementation of `IBioAPIV2`, provided its dependencies are in place.
 
 ## Requirements:
-* Java version = 11.X.X
+* Java version = 21.X.X
 * Maven version >= 3.6
 
 ## Run jar directly
