@@ -18,12 +18,12 @@ mvn clean install
 ### Run jar
 
 ```text
-java -Dloader.path=<biosdk jar provided by third-party vendors> -Dbiosdk_bioapi_impl=<classpath of class that implements IBioApi interface> -jar biosdk-services-<version>.jar
+java -Dloader.path=<biosdk jar provided by third-party vendors> -Dbiosdk_bioapi_impl=<classpath of class that implements IBioApi interface> --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED  -jar biosdk-services-<version>.jar
 ```
 
 For example:
 ```text
-java -Dloader.path=mock-sdk.jar -Dbiosdk_bioapi_impl=io.mosip.mock.sdk.impl.SampleSDK -jar biosdk-services-1.1.3.jar
+java -Dloader.path=mock-sdk.jar -Dbiosdk_bioapi_impl=io.mosip.mock.sdk.impl.SampleSDK  -jar biosdk-services-1.1.3.jar
 ```
 
 ### Check service status
