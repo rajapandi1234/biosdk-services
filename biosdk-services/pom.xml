@@ -38,10 +38,6 @@
 		<git.commit.id.plugin.version>3.0.1</git.commit.id.plugin.version>
 
 		<!-- Swagger -->
-		<springfox.swagger2.version>2.9.2</springfox.swagger2.version>
-		<io.springfox.version>3.0.0</io.springfox.version>
-
-		<!-- Swagger -->
 		<springdoc.openapi.starter.webmvc.ui.version>2.5.0</springdoc.openapi.starter.webmvc.ui.version>
 
 		<!-- Mosip kernel -->
@@ -263,7 +259,7 @@
 				<configuration>
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 					<generateGitPropertiesFilename>
-						${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+						${project.build.outputDirectory}/service-git.properties</generateGitPropertiesFilename>
 					<includeOnlyProperties>
 						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
 						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
