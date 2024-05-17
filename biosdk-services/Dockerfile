@@ -60,34 +60,6 @@ RUN apk -q update \
 && apk add -q build-base cmake git bash unzip wget libstdc++ libc++-dev libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev openblas-dev ffmpeg-dev gfortran sudo\
 && addgroup -g ${container_user_gid} ${container_user_group} \
 && adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user}
-
-# Install glibc
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
-    apk add glibc-2.34-r0.apk && \
-    rm glibc-2.34-r0.apk
-
-# Download and build OpenCV
-RUN mkdir /opencv && \
-    cd /opencv && \
-    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.5.3.zip && \
-    unzip opencv.zip && \
-    mkdir -p /opencv/opencv-4.5.3/build && \
-    cd /opencv/opencv-4.5.3/build && \
-    cmake -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D WITH_OPENCL=OFF \
-          -D WITH_IPP=OFF \
-          -D WITH_TBB=OFF \
-          -D BUILD_EXAMPLES=OFF \
-          -D BUILD_DOCS=OFF \
-          -D BUILD_TESTS=OFF \
-          -D BUILD_PERF_TESTS=OFF \
-          -D BUILD_opencv_java=ON \
-          -D BUILD_opencv_python=OFF .. && \
-    make -j$(nproc) && \
-    make install && \
-    ldconfig
     
 # set working directory for the user
 WORKDIR /home/${container_user}
@@ -126,6 +98,34 @@ EXPOSE 9099
 ENV LD_LIBRARY_PATH=/usr/local/share/java/opencv4:$LD_LIBRARY_PATH
 
 ENTRYPOINT ["/home/mosip/configure_biosdk.sh"]
+
+# Install glibc
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
+    apk add glibc-2.34-r0.apk && \
+    rm glibc-2.34-r0.apk
+
+# Download and build OpenCV
+RUN mkdir /opencv && \
+    cd /opencv && \
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/4.5.3.zip && \
+    unzip opencv.zip && \
+    mkdir -p /opencv/opencv-4.5.3/build && \
+    cd /opencv/opencv-4.5.3/build && \
+    cmake -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D WITH_OPENCL=OFF \
+          -D WITH_IPP=OFF \
+          -D WITH_TBB=OFF \
+          -D BUILD_EXAMPLES=OFF \
+          -D BUILD_DOCS=OFF \
+          -D BUILD_TESTS=OFF \
+          -D BUILD_PERF_TESTS=OFF \
+          -D BUILD_opencv_java=ON \
+          -D BUILD_opencv_python=OFF .. && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
 
 CMD echo $biosdk_bioapi_impl ; \
 java -Dloader.path="${loader_path_env}" -Djava.library.path=/usr/local/share/java/opencv4 -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect.DirectMethodHandleAccessor=ALL-UNNAMED -jar biosdk-services.jar
