@@ -62,10 +62,18 @@ RUN apk -q update \
 && adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user}
     
 # Install glibc
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
-RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk
-RUN apk add glibc-2.34-r0.apk
-RUN rm glibc-2.34-r0.apk
+ENV GLIBC_VERSION="2.35-r0"
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
+    apk add --no-cache --force-overwrite glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk && \
+    rm -f /etc/apk/keys/sgerrand.rsa.pub && \
+    rm glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk
+    
+# RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+# RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk
+# RUN apk add -q glibc-2.34-r0.apk
+# RUN rm glibc-2.34-r0.apk
 
 # Download and build OpenCV
 RUN mkdir /opencv && \
