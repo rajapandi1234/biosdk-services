@@ -127,6 +127,5 @@ ENV LD_LIBRARY_PATH=/usr/local/share/java/opencv4:$LD_LIBRARY_PATH
 
 ENTRYPOINT ["/home/mosip/configure_biosdk.sh"]
 
-
 CMD echo $biosdk_bioapi_impl ; \
 java -Dloader.path="${loader_path_env}" -Djava.library.path=/usr/local/share/java/opencv4 -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect.DirectMethodHandleAccessor=ALL-UNNAMED -jar biosdk-services.jar
