@@ -94,7 +94,7 @@ RUN mkdir /opencv && \
           -D INSTALL_C_EXAMPLES=OFF \
           -D INSTALL_PYTHON_EXAMPLES=OFF \
           -D BUILD_opencv_python=OFF .. && \
-    make -j$(nproc) && \
+    make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L" && \
     make install && \
     ldconfig
 
