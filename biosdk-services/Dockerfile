@@ -80,10 +80,10 @@ RUN mkdir /opencv && \
     unzip opencv_contrib.zip
 
 # Patch OpenCV to include <cstdint> in the problematic file
-RUN echo '#include <cstdint>' > /tmp/patch.diff && \
-    echo '1 a\ ' >> /tmp/patch.diff && \
-    echo '#include <cstdint>' >> /tmp/patch.diff && \
-    patch /opencv/opencv-${OPENCV_VERSION}/3rdparty/ade/ade-0.1.1f/sources/ade/include/ade/typed_graph.hpp < /tmp/patch.diff
+# RUN echo '#include <cstdint>' > /tmp/patch.diff && \
+#     echo '1 a\ ' >> /tmp/patch.diff && \
+#     echo '#include <cstdint>' >> /tmp/patch.diff && \
+#     patch /opencv/opencv-${OPENCV_VERSION}/3rdparty/ade/ade-0.1.1f/sources/ade/include/ade/typed_graph.hpp < /tmp/patch.diff
 
 # Build OpenCV with Java bindings
 RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
