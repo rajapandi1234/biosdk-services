@@ -62,10 +62,10 @@ RUN apk -q update \
 && adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user}
     
 # Install glibc
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk && \
-    apk add glibc-2.34-r0.apk && \
-    rm glibc-2.34-r0.apk
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.34-r0/glibc-2.34-r0.apk
+RUN apk add glibc-2.34-r0.apk
+RUN rm glibc-2.34-r0.apk
 
 # Download and build OpenCV
 RUN mkdir /opencv && \
