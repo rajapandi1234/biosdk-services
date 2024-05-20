@@ -57,7 +57,7 @@ ARG container_user_gid=1001
 
 # install packages and create user
 RUN apk -q update \
-&& apk add -q build-base cmake git bash unzip wget libstdc++ libc++-dev libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev openblas-dev ffmpeg-dev gfortran sudo\
+&& apk add -q build-base cmake git bash unzip wget libstdc++ libc++-dev libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev openblas-dev ffmpeg-dev gfortran linux-headers sudo\
 && addgroup -g ${container_user_gid} ${container_user_group} \
 && adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user}
     
