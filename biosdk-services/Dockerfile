@@ -92,7 +92,7 @@ RUN mkdir /opencv && \
           -D BUILD_PERF_TESTS=OFF \
           -D BUILD_opencv_java=ON \
           -D INSTALL_C_EXAMPLES=OFF \
-          -D INSTALL_PYTHON_EXAMPLES=OFF
+          -D INSTALL_PYTHON_EXAMPLES=OFF \
           -D BUILD_opencv_python=OFF .. && \
     make -j$(nproc) && \
     make install && \
