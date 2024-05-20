@@ -102,6 +102,7 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
           -D INSTALL_C_EXAMPLES=OFF \
           -D INSTALL_PYTHON_EXAMPLES=OFF \
           -D CMAKE_CXX_STANDARD=11 \
+          -D BUILD_opencv_gapi=OFF \
           -D BUILD_opencv_python=OFF .. && \
     make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L" && \
     make install && \
