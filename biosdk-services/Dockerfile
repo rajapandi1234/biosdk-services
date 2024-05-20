@@ -57,7 +57,7 @@ ARG container_user_gid=1001
 
 # install packages and create user
 RUN apk -q update \
-&& apk add -q build-base cmake git bash unzip wget gcc g++ libstdc++ libc++-dev libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev openblas-dev ffmpeg-dev gfortran linux-headers sudo\
+&& apk add -q build-base cmake git bash unzip wget gcc g++ libstdc++ libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev openblas-dev ffmpeg-dev gfortran linux-headers patch sudo\
 && addgroup -g ${container_user_gid} ${container_user_group} \
 && adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user}
     
@@ -70,15 +70,23 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
     rm -f /etc/apk/keys/sgerrand.rsa.pub && \
     rm glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk
     
-# Download and build OpenCV
+# Download OpenCV and OpenCV Contrib source code
 ENV OPENCV_VERSION=4.5.3
 RUN mkdir /opencv && \
     cd /opencv && \
     wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
     unzip opencv.zip && \
 	wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
-    unzip opencv_contrib.zip && \
-    mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
+    unzip opencv_contrib.zip
+
+# Patch OpenCV to include <cstdint> in the problematic file
+RUN echo '#include <cstdint>' > /tmp/patch.diff && \
+    echo '1 a\ ' >> /tmp/patch.diff && \
+    echo '#include <cstdint>' >> /tmp/patch.diff && \
+    patch /opencv/opencv-${OPENCV_VERSION}/3rdparty/ade/ade-0.1.1f/sources/ade/include/ade/typed_graph.hpp < /tmp/patch.diff
+
+# Build OpenCV with Java bindings
+RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
     cd /opencv/opencv-${OPENCV_VERSION}/build && \
     cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -98,6 +106,10 @@ RUN mkdir /opencv && \
     make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L" && \
     make install && \
     ldconfig
+
+# Clean up unnecessary files
+RUN apk del build-base cmake git wget unzip patch && \
+    rm -rf /var/cache/apk/* /opencv
 
 # set working directory for the user
 WORKDIR /home/${container_user}
