@@ -110,8 +110,8 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
           -D BUILD_opencv_wechat_qrcode=OFF \
           -D BUILD_opencv_ximgproc=OFF \
           -D BUILD_opencv_stitching=OFF \
-          -D BUILD_opencv_python=OFF
-RUN make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"
+          -D BUILD_opencv_python=OFF ..  && \
+	make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"
 RUN make install
 RUN ldconfig
 
