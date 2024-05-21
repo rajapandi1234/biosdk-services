@@ -86,9 +86,9 @@ RUN mkdir /opencv && \
 #     patch /opencv/opencv-${OPENCV_VERSION}/3rdparty/ade/ade-0.1.1f/sources/ade/include/ade/typed_graph.hpp < /tmp/patch.diff
 
 # Build OpenCV with Java bindings
-RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build
-RUN cd /opencv/opencv-${OPENCV_VERSION}/build
-RUN cmake -D CMAKE_BUILD_TYPE=Release \
+RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
+	cd /opencv/opencv-${OPENCV_VERSION}/build && \
+	cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
 		  -D OPENCV_EXTRA_MODULES_PATH=/opencv/opencv_contrib-${OPENCV_VERSION}/modules \          
           -D BUILD_EXAMPLES=OFF \
