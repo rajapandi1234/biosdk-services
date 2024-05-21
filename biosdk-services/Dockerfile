@@ -91,9 +91,6 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
     cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
 		  -D OPENCV_EXTRA_MODULES_PATH=/opencv/opencv_contrib-${OPENCV_VERSION}/modules \          
-          -D WITH_OPENCL=OFF \
-          -D WITH_IPP=OFF \
-          -D WITH_TBB=OFF \
           -D BUILD_EXAMPLES=OFF \
           -D BUILD_DOCS=OFF \
           -D BUILD_TESTS=OFF \
@@ -101,12 +98,16 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
           -D BUILD_opencv_java=ON \
           -D INSTALL_C_EXAMPLES=OFF \
           -D INSTALL_PYTHON_EXAMPLES=OFF \
-          -D CMAKE_CXX_STANDARD=11 \
           -D BUILD_opencv_gapi=OFF \
+          -D WITH_OPENCL=OFF \
+          -D WITH_IPP=OFF \
+          -D WITH_TBB=OFF \
 		  -D WITH_LAPACK=OFF \
 		  -D WITH_EIGEN=OFF \	
 		  -D WITH_DNN=OFF \
-		  -D WITH_FFMPEG=OFF \	  
+		  -D WITH_FFMPEG=ON \	  
+          -D CMAKE_CXX_STANDARD=11 \
+          -D BUILD_opencv_wechat_qrcode=OFF \
           -D BUILD_opencv_python=OFF .. && \
     make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L" && \
     make install && \
