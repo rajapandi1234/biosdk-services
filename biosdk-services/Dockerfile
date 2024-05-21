@@ -110,7 +110,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D BUILD_opencv_wechat_qrcode=OFF \
           -D BUILD_opencv_ximgproc=OFF \
           -D BUILD_opencv_stitching=OFF \
-          -D BUILD_opencv_python=OFF ..
+          -D BUILD_opencv_python=OFF
 RUN make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"
 RUN make install
 RUN ldconfig
