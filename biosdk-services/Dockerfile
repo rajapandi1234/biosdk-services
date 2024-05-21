@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre-alpine
+FROM mosipdev/openjdk-21-jre:latest
 
 # label to be assigned along with  Docker build [Mandatory]
 ARG SOURCE
@@ -50,74 +50,10 @@ ARG container_user=mosip
 ARG container_user_group=mosip
 
 # can be passed during Docker build as build time environment for github branch to pickup configuration from.
-ARG container_user_uid=1002
+ARG container_user_uid=1001
 
 # can be passed during Docker build as build time environment for github branch to pickup configuration from.
 ARG container_user_gid=1001
-
-# install packages and create user
-RUN apk -q update \
-&& apk add -q build-base cmake git bash unzip wget gcc g++ libstdc++ libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev openblas-dev ffmpeg-dev gfortran linux-headers patch sudo\
-&& addgroup -g ${container_user_gid} ${container_user_group} \
-&& adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user}
-    
-# Install glibc
-ENV GLIBC_VERSION="2.35-r0"
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
-    apk add --no-cache --force-overwrite glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk && \
-    rm -f /etc/apk/keys/sgerrand.rsa.pub && \
-    rm glibc-${GLIBC_VERSION}.apk glibc-bin-${GLIBC_VERSION}.apk
-    
-# Download OpenCV and OpenCV Contrib source code
-ENV OPENCV_VERSION=4.5.3
-RUN mkdir /opencv && \
-    cd /opencv && \
-    wget -O opencv.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
-    unzip opencv.zip && \
-	wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip && \
-    unzip opencv_contrib.zip
-
-# Patch OpenCV to include <cstdint> in the problematic file
-# RUN echo '#include <cstdint>' > /tmp/patch.diff && \
-#     echo '1 a\ ' >> /tmp/patch.diff && \
-#     echo '#include <cstdint>' >> /tmp/patch.diff && \
-#     patch /opencv/opencv-${OPENCV_VERSION}/3rdparty/ade/ade-0.1.1f/sources/ade/include/ade/typed_graph.hpp < /tmp/patch.diff
-
-# Build OpenCV with Java bindings
-RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
-	cd /opencv/opencv-${OPENCV_VERSION}/build && \
-	cmake -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_INSTALL_PREFIX=/usr/local \
-		  -D OPENCV_EXTRA_MODULES_PATH=/opencv/opencv_contrib-${OPENCV_VERSION}/modules \          
-          -D BUILD_EXAMPLES=OFF \
-          -D BUILD_DOCS=OFF \
-          -D BUILD_TESTS=OFF \
-          -D BUILD_PERF_TESTS=OFF \
-          -D BUILD_opencv_java=ON \
-          -D INSTALL_C_EXAMPLES=OFF \
-          -D INSTALL_PYTHON_EXAMPLES=OFF \
-          -D BUILD_opencv_gapi=OFF \
-          -D WITH_OPENCL=OFF \
-          -D WITH_IPP=OFF \
-          -D WITH_TBB=OFF \
-		  -D WITH_LAPACK=OFF \
-		  -D WITH_EIGEN=OFF \	
-		  -D WITH_DNN=OFF \
-		  -D WITH_FFMPEG=OFF \	  
-          -D CMAKE_CXX_STANDARD=11 \
-          -D BUILD_opencv_wechat_qrcode=OFF \
-          -D BUILD_opencv_ximgproc=OFF \
-          -D BUILD_opencv_stitching=OFF \
-          -D BUILD_opencv_python=OFF ..  && \
-	make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"  && \
-	make install
-# RUN ldconfig
-
-# Clean up unnecessary files
-RUN apk del build-base cmake git wget unzip patch && \
-    rm -rf /var/cache/apk/* /opencv
 
 # set working directory for the user
 WORKDIR /home/${container_user}
@@ -126,36 +62,35 @@ ENV work_dir=/home/${container_user}
 
 ARG loader_path=${work_dir}/additional_jars/
 
-RUN mkdir -p ${loader_path}
-
 ENV loader_path_env=${loader_path}
-
-ADD configure_biosdk.sh /home/${container_user}/configure_biosdk.sh
-
-RUN chmod +x /home/${container_user}/configure_biosdk.sh
-
-RUN chmod a-w /home/${container_user}/configure_biosdk.sh
 
 ARG logging_level_root=INFO
 
 ENV logging_level_root_env=${logging_level_root}
 
+# install packages and create user for ubunutu latest
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends sudo && \
+    groupadd -g ${container_user_gid} ${container_user_group} && \
+    useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/bash -m ${container_user} && \
+    mkdir -p /home/${container_user} ${loader_path}
+    
+
+ADD configure_biosdk.sh /home/${container_user}/configure_biosdk.sh
+
 ADD ./target/biosdk-services-*.jar biosdk-services.jar
 
-RUN chmod 775 biosdk-services.jar
-
-# change permissions of file inside working dir
-RUN chown -R ${container_user}:${container_user} /home/${container_user}
+RUN chmod +x /home/${container_user}/configure_biosdk.sh \
+    && chmod a-w /home/${container_user}/configure_biosdk.sh \
+    && chmod 775 biosdk-services.jar \
+    && chown -R ${container_user}:${container_user} /home/${container_user}
 
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
 
 EXPOSE 9099
 
-# Set the environment variable for OpenCV native library path
-ENV LD_LIBRARY_PATH=/usr/local/share/java/opencv4:$LD_LIBRARY_PATH
-
-ENTRYPOINT ["/home/mosip/configure_biosdk.sh"]
+ENTRYPOINT ["./configure_biosdk.sh"]
 
 CMD echo $biosdk_bioapi_impl ; \
-java -Dloader.path="${loader_path_env}" -Djava.library.path=/usr/local/share/java/opencv4 -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect.DirectMethodHandleAccessor=ALL-UNNAMED -jar biosdk-services.jar
+java -Dloader.path="${loader_path_env}" -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect.DirectMethodHandleAccessor=ALL-UNNAMED -jar biosdk-services.jar
