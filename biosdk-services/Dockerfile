@@ -105,7 +105,7 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
 		  -D WITH_LAPACK=OFF \
 		  -D WITH_EIGEN=OFF \	
 		  -D WITH_DNN=OFF \
-		  -D WITH_FFMPEG=ON \	  
+		  -D WITH_FFMPEG=OFF \	  
           -D CMAKE_CXX_STANDARD=11 \
           -D BUILD_opencv_wechat_qrcode=OFF \
           -D BUILD_opencv_python=OFF .. && \
