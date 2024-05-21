@@ -111,9 +111,9 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
           -D BUILD_opencv_ximgproc=OFF \
           -D BUILD_opencv_stitching=OFF \
           -D BUILD_opencv_python=OFF ..  && \
-	make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"
-RUN make install
-RUN ldconfig
+	make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"  && \
+	make install
+# RUN ldconfig
 
 # Clean up unnecessary files
 RUN apk del build-base cmake git wget unzip patch && \
