@@ -86,9 +86,9 @@ RUN mkdir /opencv && \
 #     patch /opencv/opencv-${OPENCV_VERSION}/3rdparty/ade/ade-0.1.1f/sources/ade/include/ade/typed_graph.hpp < /tmp/patch.diff
 
 # Build OpenCV with Java bindings
-RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
-    cd /opencv/opencv-${OPENCV_VERSION}/build && \
-    cmake -D CMAKE_BUILD_TYPE=Release \
+RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build
+RUN cd /opencv/opencv-${OPENCV_VERSION}/build
+RUN cmake -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
 		  -D OPENCV_EXTRA_MODULES_PATH=/opencv/opencv_contrib-${OPENCV_VERSION}/modules \          
           -D BUILD_EXAMPLES=OFF \
@@ -109,10 +109,11 @@ RUN mkdir -p /opencv/opencv-${OPENCV_VERSION}/build && \
           -D CMAKE_CXX_STANDARD=11 \
           -D BUILD_opencv_wechat_qrcode=OFF \
           -D BUILD_opencv_ximgproc=OFF \
-          -D BUILD_opencv_python=OFF .. && \
-    make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L" && \
-    make install && \
-    ldconfig
+          -D BUILD_opencv_stitching=OFF \
+          -D BUILD_opencv_python=OFF ..
+RUN make -j$(nproc) CFLAGS="-D__STDC_VERSION__=199901L"
+RUN make install
+RUN ldconfig
 
 # Clean up unnecessary files
 RUN apk del build-base cmake git wget unzip patch && \
