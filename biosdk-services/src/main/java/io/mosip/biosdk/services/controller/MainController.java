@@ -72,7 +72,7 @@ public class MainController {
 	@GetMapping(path = "/s")
 	@ApiOperation(value = "Service role status")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Service is running...") })
-	public ResponseEntity<String> roleStatus() {
+	public ResponseEntity<String> status1() {
 		Date d = new Date();
 		return ResponseEntity.status(HttpStatus.OK).body("Service is running... " + d.toString());
 	}
