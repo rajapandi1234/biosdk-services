@@ -21,9 +21,11 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
-		httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        /*
+         *  Disabling CSRF protection because this is a stateless API that uses token-based authentication
+         */
+		httpSecurity.csrf(AbstractHttpConfigurer::disable); // NOSONAR
 		httpSecurity.authorizeHttpRequests(http -> http.anyRequest().permitAll());
-		
 		return httpSecurity.build();
 	}
 	
