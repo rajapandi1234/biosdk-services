@@ -49,15 +49,14 @@ public class MainController {
 
 	private Logger logger = LoggerConfig.logConfig(MainController.class);
 
-	@Autowired
 	private Utils serviceUtil;
-
-	@Autowired
 	private BioSdkServiceFactory bioSdkServiceFactory;
-
 	private Gson gson = null;
 
-	public MainController() {
+	@Autowired
+	public MainController(Utils serviceUtil, BioSdkServiceFactory bioSdkServiceFactory) {
+		this.serviceUtil = serviceUtil;
+		this.bioSdkServiceFactory = bioSdkServiceFactory;
 		gson = new GsonBuilder().serializeNulls().create();
 	}
 
@@ -73,7 +72,7 @@ public class MainController {
 	@GetMapping(path = "/s")
 	@ApiOperation(value = "Service role status")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Service is running...") })
-	public ResponseEntity<String> roleStatus() {
+	public ResponseEntity<String> status1() {
 		Date d = new Date();
 		return ResponseEntity.status(HttpStatus.OK).body("Service is running... " + d.toString());
 	}

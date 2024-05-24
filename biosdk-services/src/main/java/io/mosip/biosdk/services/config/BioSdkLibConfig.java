@@ -24,9 +24,13 @@ import jakarta.annotation.PostConstruct;
 public class BioSdkLibConfig {
     private static final Logger logger = LoggerFactory.getLogger(BioSdkLibConfig.class);
 
-    @Autowired
     private Environment env;
 
+    @Autowired
+    public BioSdkLibConfig(Environment env) {
+    	this.env = env;
+    }
+    
     @PostConstruct
     public void validateBioSdkLib() throws ClassNotFoundException {
     	String sdkClass = this.env.getProperty("biosdk_bioapi_impl");
