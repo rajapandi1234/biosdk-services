@@ -10,10 +10,13 @@ import java.util.List;
 
 @Component
 public class BioSdkServiceFactory {
-
-    @Autowired
     private List<BioSdkServiceProvider> bioSdkServiceProviders;
 
+    @Autowired
+    public BioSdkServiceFactory(List<BioSdkServiceProvider> bioSdkServiceProviders) {
+    	this.bioSdkServiceProviders = bioSdkServiceProviders;
+    }    
+    
     public BioSdkServiceProvider getBioSdkServiceProvider(String version){
         for(BioSdkServiceProvider provider : bioSdkServiceProviders) {
             if(provider.getSpecVersion().equals(version)){

@@ -3,6 +3,7 @@ package io.mosip.biosdk.services.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
@@ -19,8 +20,8 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.httpBasic(httpEntry -> httpEntry.disable());
-		httpSecurity.csrf(httpEntry -> httpEntry.disable());
+		httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
+		httpSecurity.csrf(AbstractHttpConfigurer::disable);
 		httpSecurity.authorizeHttpRequests(http -> http.anyRequest().permitAll());
 		
 		return httpSecurity.build();
