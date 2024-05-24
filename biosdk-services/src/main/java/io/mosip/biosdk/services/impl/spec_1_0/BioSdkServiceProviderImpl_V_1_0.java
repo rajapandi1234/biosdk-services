@@ -44,18 +44,17 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 	private static final String DECODE_SUCCESS = "decoding successful";
 	private static final String JSON_TO_DTO_SUCCESS = "json to dto successful";
 
-	@Autowired
 	private IBioApiV2 iBioApi;
-
-	@Autowired
 	private Utils utils;
-
 	private Gson gson;
 
 	@Value("${mosip.biosdk.log-request-response-enabled:false}")
 	private boolean isLogRequestResponse;
 
-	public BioSdkServiceProviderImpl_V_1_0() {
+	@Autowired
+	public BioSdkServiceProviderImpl_V_1_0(IBioApiV2 iBioApi, Utils utils) {
+		this.iBioApi = iBioApi;
+		this.utils = utils;
 		gson = new GsonBuilder().serializeNulls().create();
 	}
 	

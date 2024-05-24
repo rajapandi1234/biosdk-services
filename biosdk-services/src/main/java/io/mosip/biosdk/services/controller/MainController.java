@@ -49,15 +49,14 @@ public class MainController {
 
 	private Logger logger = LoggerConfig.logConfig(MainController.class);
 
-	@Autowired
 	private Utils serviceUtil;
-
-	@Autowired
 	private BioSdkServiceFactory bioSdkServiceFactory;
-
 	private Gson gson = null;
 
-	public MainController() {
+	@Autowired
+	public MainController(Utils serviceUtil, BioSdkServiceFactory bioSdkServiceFactory) {
+		this.serviceUtil = serviceUtil;
+		this.bioSdkServiceFactory = bioSdkServiceFactory;
 		gson = new GsonBuilder().serializeNulls().create();
 	}
 
