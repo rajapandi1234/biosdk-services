@@ -249,9 +249,7 @@ public class BioSdkServiceProviderImpl_V_1_0 implements BioSdkServiceProvider {
 		try {
 			return Utils.base64Decode(data);
 		} catch (RuntimeException e) {
-			e.printStackTrace();
-			logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, ErrorMessages.INVALID_REQUEST_BODY.toString(),
-					e.toString() + " " + e.getMessage());
+			logger.error(LOGGER_SESSIONID, LOGGER_IDTYPE, ErrorMessages.INVALID_REQUEST_BODY.toString(), e);
 			throw new BioSDKException(ErrorMessages.INVALID_REQUEST_BODY.toString(),
 					ErrorMessages.INVALID_REQUEST_BODY.getMessage() + ": " + e.toString() + " " + e.getMessage());
 		}
