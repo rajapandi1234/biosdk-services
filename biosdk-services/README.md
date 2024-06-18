@@ -1,6 +1,6 @@
 # Bio SDK services
 
-This service provides implementation of IBioAPI over REST. Bio SDK client is used to provide java methods to connect with services. 
+This service provides a mock implementation of Bio-SDK REST Service. It by default loads [Mock BIO SDK](https://github.com/mosip/mosip-mock-services/tree/master/mock-sdk) internally on the startup and exposes the endpoints to perform 1:N match, segmentation, extraction as per the [IBioAPI](https://github.com/mosip/commons/blob/master/kernel/kernel-biometrics-api/src/main/java/io/mosip/kernel/biometrics/spi/IBioApiV2.java). This can be configured to load a different JAR that has a different implementation of `IBioAPIV2`, provided its dependencies are in place.
 
 ## Requirements:
 * Java version = 21.X.X
@@ -18,7 +18,7 @@ mvn clean install
 ### Run jar
 
 ```text
-java -Dloader.path=<biosdk jar provided by third-party vendors> -Dbiosdk_bioapi_impl=<classpath of class that implements IBioApi interface> -jar biosdk-services-<version>.jar
+java -Dloader.path=<biosdk jar provided by third-party vendors> -Dbiosdk_bioapi_impl=<classpath of class that implements IBioApi interface> --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED  -jar biosdk-services-<version>.jar
 ```
 
 For example:
@@ -71,8 +71,3 @@ http://{host}:9099/biosdk-service/swagger-ui.html
 
 In case of localhost:
 http://localhost:9099/biosdk-service/swagger-ui.html
-```
-
-## Specifications
-
-### Spec 1.0

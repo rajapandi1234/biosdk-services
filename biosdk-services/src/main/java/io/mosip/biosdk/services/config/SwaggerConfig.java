@@ -1,62 +1,75 @@
 package io.mosip.biosdk.services.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 
-import java.util.HashSet;
-import java.util.Set;
-
+/**
+ * Configuration class for Swagger/OpenAPI documentation generation.
+ * <p>
+ * This class defines beans to configure the OpenAPI specification based on the
+ * provided {@link OpenApiProperties}. It initializes an {@link OpenAPI} bean
+ * and a {@link GroupedOpenApi} bean to customize and group API documentation
+ * according to specified properties.
+ */
 @Configuration
-@EnableSwagger2
-public class SwaggerConfig extends WebMvcConfigurationSupport {
-    @Value("${application.env.local:false}")
-    private Boolean localEnv;
+public class SwaggerConfig {
+	private static final Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
 
-    @Value("${swagger.base-url:#{null}}")
-    private String swaggerBaseUrl;
+	private OpenApiProperties openApiProperties;
 
-    @Value("${server.port:9092}")
-    private int serverPort;
+	/**
+	 * Constructs a {@code SwaggerConfig} instance with the provided
+	 * {@link OpenApiProperties}.
+	 *
+	 * @param openApiProperties The properties containing OpenAPI configuration
+	 *                          details
+	 */
+	@Autowired
+	public SwaggerConfig(OpenApiProperties openApiProperties) {
+		this.openApiProperties = openApiProperties;
+	}
 
-    String proto = "http";
-    String host = "localhost";
-    int port = -1;
-    String hostWithPort = "localhost:9092";
+	/**
+	 * Creates an {@link OpenAPI} bean configured with title, version, description,
+	 * and license information.
+	 *
+	 * @return Configured {@link OpenAPI} instance representing the OpenAPI
+	 *         specification
+	 */
+	@Bean
+	public OpenAPI openApi() {
+		OpenAPI api = new OpenAPI().components(new Components())
+				.info(new Info().title(openApiProperties.getInfo().getTitle())
+						.version(openApiProperties.getInfo().getVersion())
+						.description(openApiProperties.getInfo().getDescription())
+						.license(new License().name(openApiProperties.getInfo().getLicense().getName())
+								.url(openApiProperties.getInfo().getLicense().getUrl())));
 
-    @Bean
-    public Docket api() {
-        if(swaggerBaseUrl !=null){
-            String newSwaggerBaseUrl=swaggerBaseUrl.replace(":80", "");
-            swaggerBaseUrl = newSwaggerBaseUrl;
-        }
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
-    }
+		openApiProperties.getService().getServers().forEach(
+				server -> api.addServersItem(new Server().description(server.getDescription()).url(server.getUrl())));
+		logger.info("swagger open api bean is ready");
+		return api;
+	}
 
-    private Set<String> protocols() {
-        Set<String> protocols = new HashSet<>();
-        protocols.add(proto);
-        return protocols;
-    }
-
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
+	/**
+	 * Creates a {@link GroupedOpenApi} bean to group API paths based on configured
+	 * properties.
+	 *
+	 * @return {@link GroupedOpenApi} instance representing grouped API paths
+	 */
+	@Bean
+	public GroupedOpenApi groupedOpenApi() {
+		return GroupedOpenApi.builder().group(openApiProperties.getGroup().getName())
+				.pathsToMatch(openApiProperties.getGroup().getPaths().stream().toArray(String[]::new)).build();
+	}
 }

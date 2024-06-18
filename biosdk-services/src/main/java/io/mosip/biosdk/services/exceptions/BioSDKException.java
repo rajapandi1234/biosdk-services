@@ -2,6 +2,16 @@ package io.mosip.biosdk.services.exceptions;
 
 import io.mosip.kernel.core.exception.BaseUncheckedException;
 
+/**
+ * Custom unchecked exception for representing errors specific to the MOSIP Biometric SDK service.
+ * <p>
+ * This exception extends {@link BaseUncheckedException}, providing structured error handling
+ * capabilities with error code, error message, and optional cause.
+ * </p>
+ *
+ *
+ * @since 1.0
+ */
 public class BioSDKException extends BaseUncheckedException {
     /**
      * Serializable Version Id
