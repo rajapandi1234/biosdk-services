@@ -22,9 +22,6 @@ ARG spring_config_url
 # can be passed during Docker build as build time environment for config server name
 ARG spring_cloud_config_name=application,biosdk-service
 
-# can be passed during Docker build as build time environment for context path
-ARG server_servlet_context_path=/biosdk-service
-
 # can be passed during Docker build as build time environment for spring application name
 ARG spring_application_name=biosdk-service
 
