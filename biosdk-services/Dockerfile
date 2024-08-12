@@ -36,8 +36,6 @@ ENV active_profile_env=${active_profile}
 ENV spring_config_url_env=${spring_config_url}
 # environment variable to pass spring config server name, at docker runtime
 ENV spring_cloud_config_name_env=${spring_cloud_config_name}
-# environment variable to pass context path, at docker runtime
-ENV server_servlet_context_path_env=${server_servlet_context_path}
 # environment variable to pass spring application name, at docker runtime
 ENV spring_application_name_env=${spring_application_name}
 
@@ -108,4 +106,4 @@ EXPOSE 9099
 ENTRYPOINT ["./configure_biosdk.sh"]
 
 CMD echo $biosdk_bioapi_impl ; \
-java -Dloader.path="${loader_path_env}" -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" -Dspring.application.name="${spring_application_name_env}" -Dspring.cloud.config.name="${spring_cloud_config_name_env}" -Dserver.servlet.context-path="${server_servlet_context_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect.DirectMethodHandleAccessor=ALL-UNNAMED -jar biosdk-services.jar
+java -Dloader.path="${loader_path_env}" -Dserver.servlet.context-path="${service_context_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}"  -Dspring.cloud.config.uri="${spring_config_url_env}" -Dspring.application.name="${spring_application_name_env}" -Dspring.cloud.config.name="${spring_cloud_config_name_env}" --add-modules=ALL-SYSTEM --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.lang.stream=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.time.LocalDate=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime=ALL-UNNAMED --add-opens java.base/java.time.LocalDateTime.date=ALL-UNNAMED --add-opens java.base/jdk.internal.reflect.DirectMethodHandleAccessor=ALL-UNNAMED -jar biosdk-services.jar
