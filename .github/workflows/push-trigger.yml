@@ -88,10 +88,7 @@ jobs:
     needs: build-dockers
     runs-on: ubuntu-latest
     steps:
-      - name: Set environment variables
-        run: |
-          echo "SERVICE_NAME=biosdk-server" >> $GITHUB_ENV
-          echo "VERSION=latest" >> $GITHUB_ENV
+      
 
       - name: Checkout code
         uses: actions/checkout@v3
