@@ -1,0 +1,53 @@
+name: Check for Hardcoded Secrets
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - develop
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Fetch base branch for PRs
+      if: github.event_name == 'pull_request'
+      run: git fetch origin +refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+
+    - name: Run secret scan
+      run: |
+        # Define regex patterns for common secrets
+        regex_patterns=(
+          'AKIA[0-9A-Z]{16}'  # AWS Access Key ID
+          'aws_secret_access_key\s*=\s*[A-Za-z0-9/+=]{40}'  # AWS Secret Access Key
+          '-----BEGIN PRIVATE KEY-----'  # Private Key
+          '-----BEGIN RSA PRIVATE KEY-----'  # RSA Private Key
+          'password\s*=\s*.*'  # Generic password pattern
+        )
+
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          # Get the list of changed files in the pull request
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }})
+        else
+          # Get the list of changed files in the push
+          changed_files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+        fi
+
+        # Scan for secrets in the changed files
+        for file in $changed_files; do
+          for pattern in "${regex_patterns[@]}"; do
+            if grep -E "$pattern" "$file"; then
+              echo "Error: Hardcoded secret detected in $file!"
+              exit 1
+            fi
+          done
+        done
+
+        echo "No hardcoded secrets found in the changed files."
