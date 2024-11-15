@@ -33,14 +33,14 @@ jobs:
         )
 
         if [ "${{ github.event_name }}" == "pull_request" ]; then
-          # Get the list of changed files in the pull request
-          changed_files=$(git diff --name-only origin/${{ github.base_ref }})
+          # Get the list of changed and added files in the pull request
+          changed_files=$(git diff --name-only --diff-filter=ACM origin/${{ github.base_ref }})
         else
-          # Get the list of changed files in the push
-          changed_files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+          # Get the list of changed and added files in the push
+          changed_files=$(git diff-tree --no-commit-id --name-only --diff-filter=ACM -r ${{ github.sha }})
         fi
 
-        # Scan for secrets in the changed files
+        # Scan for secrets in the changed and added files
         for file in $changed_files; do
           for pattern in "${regex_patterns[@]}"; do
             if grep -E "$pattern" "$file"; then
@@ -50,4 +50,4 @@ jobs:
           done
         done
 
-        echo "No hardcoded secrets found in the changed files."
+        echo "No hardcoded secrets found in the changed and added files."
