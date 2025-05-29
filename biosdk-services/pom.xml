@@ -21,7 +21,7 @@
         <maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 
         <!-- Lombok -->
-        <lombok.version>1.18.8</lombok.version>
+        <lombok.version>1.18.38</lombok.version>
 
         <!-- Swagger -->
         <swagger.version>2.9.2</swagger.version>
