@@ -1,0 +1,8 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/biosdk-services" # Path to the project directory
+    schedule:
+      interval: "daily" # Frequency of updates: daily, weekly, or monthly
+    target-branch: "release-1.2.0" # The branch where PRs will be created
+    open-pull-requests-limit: 50 # Maximum number of open PRs Dependabot will allow
